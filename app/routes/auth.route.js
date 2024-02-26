@@ -11,14 +11,12 @@ import { routeMeta } from "./meta.js";
 
 import {
   loginUser,
-  signupUser,
   forgotPassword,
   resetPassword,
   updatePassword,
 
   // pages --
   getLoginPage,
-  getSignupPage,
   getForgotPasswordPage,
   getResetPasswordPage,
   getMyProfilePage,
@@ -26,7 +24,6 @@ import {
 
 import {
   loginUserSchema,
-  signupUserSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
   updatePasswordSchema,
@@ -36,20 +33,11 @@ const router = Router();
 
 // pages routes
 router.get("/login", goHomeIfLoggedIn, getLoginPage);
-router.get("/signup", goHomeIfLoggedIn, getSignupPage);
 router.get("/forgot-password", goHomeIfLoggedIn, getForgotPasswordPage);
 router.get("/reset-password", goHomeIfLoggedIn, getResetPasswordPage);
 router.get("/profile", loadUserSession, requireUser, getMyProfilePage);
 
 // api or page submission routes
-router.post(
-  "/signup",
-  validatePageSubmission({
-    schema: signupUserSchema,
-    routeMeta: routeMeta["signup"],
-  }),
-  signupUser,
-);
 router.post(
   "/login",
   validatePageSubmission({

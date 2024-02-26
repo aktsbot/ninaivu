@@ -15,13 +15,6 @@ export const getLoginPage = (_req, res) => {
   });
 };
 
-export const getSignupPage = (_req, res) => {
-  const meta = routeMeta["signup"];
-  return res.render(meta.template, {
-    ...meta.meta,
-  });
-};
-
 export const getForgotPasswordPage = (_req, res) => {
   const meta = routeMeta["forgotPassword"];
   return res.render(meta.template, {
@@ -61,31 +54,6 @@ export const getLogout = (req, res, next) => {
 
 // page submissions
 // or normal webapi endpoints
-
-export const signupUser = async (req, res, next) => {
-  const meta = routeMeta["signup"];
-
-  try {
-    const { body } = req.xop;
-    const userPresent = await User.findOne({ email: body.email }, { _id: 1 });
-
-    if (userPresent) {
-      req.flash("error", [`User with email ${body.email} already exists`]);
-      return res.status(409).render(meta.template, {
-        ...meta.meta,
-        flashes: req.flash(),
-        body,
-      });
-    }
-
-    await new User({ ...body }).save();
-
-    req.flash("success", [`Your account has been created. Please login.`]);
-    return res.redirect(301, "/auth/login");
-  } catch (error) {
-    next(error);
-  }
-};
 
 export const loginUser = async (req, res, next) => {
   const meta = routeMeta["login"];

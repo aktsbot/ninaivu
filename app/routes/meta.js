@@ -7,12 +7,6 @@ export const routeMeta = {
       title: "Login",
     },
   },
-  signup: {
-    template: "pages/signup.html",
-    meta: {
-      title: "Signup",
-    },
-  },
   forgotPassword: {
     template: "pages/forgot-password.html",
     meta: {

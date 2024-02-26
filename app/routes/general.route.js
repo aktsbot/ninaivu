@@ -1,9 +1,6 @@
 import { Router } from "express";
 
-import {
-  loadUserSession,
-  requireUser,
-} from "../middlewares/auth.middleware.js";
+import { loadUserSession } from "../middlewares/auth.middleware.js";
 
 import { getHomePage } from "../controllers/general.controller.js";
 import { getLogout } from "../controllers/auth.controller.js";
