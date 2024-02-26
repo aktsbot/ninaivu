@@ -1,7 +1,7 @@
 {
-  "name": "express-mongoose-webapp-boilerplate",
+  "name": "ninaivu",
   "version": "1.0.0",
-  "description": "Express + Mongoose Webapp boilerplate",
+  "description": "The ninaivu web portal",
   "type": "module",
   "main": "app/index.js",
   "scripts": {

@@ -1,8 +1,4 @@
-# Express + Mongoose Webapp boilerplate
-
-This boiler plate is not an API. Its a full webapp i.e there's
-a templating engine added(nunjucks) and all/most responses from it will
-be HTML.
+# The ninaivu web portal
 
 To start development, you'd need to setup mongodb in your machine.
 
