@@ -1,0 +1,19 @@
+{%extends "partials/layout.html"%}
+
+<!-- login -->
+{% block content %}
+<h1>Sign in into your account</h1>
+
+<form action="/auth/login" method="POST">
+  <label for="email">Email</label>
+  <input type="email" id="email" name="email" required value="{{ body.email }}"/>
+
+  <label for="password">Password</label>
+  <input type="password" id="password" name="password" required value="{{ body.password }}"/>
+
+  <button class="btn" type="submit">Login</button>
+</form>
+
+<a href="/auth/forgot-password">Forgot password?</a>
+
+{% endblock %}
