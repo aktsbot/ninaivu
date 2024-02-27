@@ -33,6 +33,10 @@ const UserSchema = new mongoose.Schema(
       code: String,
       expiry: Date,
     },
+    userType: {
+      type: String,
+      default: "sender", // sender and admin. sender is the person who uses the app for sending sms
+    },
   },
   {
     timestamps: true,

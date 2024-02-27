@@ -15,6 +15,7 @@ export const loadUserSession = async (req, res, next) => {
       _id: 1,
       email: 1,
       fullName: 1,
+      userType: 1,
     });
 
     if (!userInfo) {

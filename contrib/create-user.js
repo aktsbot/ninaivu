@@ -39,6 +39,7 @@ async function start({ fullName, email, password }) {
       fullName,
       email,
       password,
+      userType: "admin",
     }).save();
 
     logger.info("Success. User has been created");
