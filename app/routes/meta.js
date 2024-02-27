@@ -31,4 +31,39 @@ export const routeMeta = {
       title: "My profile",
     },
   },
+  // -- senders
+  adminSendersHome: {
+    template: "pages/admin-senders-home.html",
+    meta: {
+      title: "Senders",
+    },
+  },
+  adminSendersNew: {
+    template: "pages/admin-senders-new.html",
+    meta: {
+      title: "New sender",
+    },
+  },
+  adminSendersEdit: {
+    template: "pages/admin-senders-edit.html",
+    meta: {
+      title: "Edit sender",
+    },
+  },
+
+  // -- patients
+  adminPatientsHome: {
+    template: "pages/admin-patients-home.html",
+    meta: {
+      title: "Patients",
+    },
+  },
+
+  // -- messages
+  adminMessagesHome: {
+    template: "pages/admin-messages-home.html",
+    meta: {
+      title: "Messages",
+    },
+  },
 };

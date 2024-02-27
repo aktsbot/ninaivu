@@ -8,12 +8,31 @@
       class="{{ 'current' if currentPath == '/auth/profile' else '' }}"
       >{{ user.fullName }}'s profile</a
     >
-    <a href="/logout">logout</a>
+
+    {% if user.userType == 'admin' %}
+    <a
+      href="/admin/patients"
+      class="{{ 'current' if currentPath == '/admin/patients' else '' }}"
+      >🤕 Patients</a
+    >
+    <a
+      href="/admin/messages"
+      class="{{ 'current' if currentPath == '/admin/messages' else '' }}"
+      >✉️ Messages</a
+    >
+    <a
+      href="/admin/senders"
+      class="{{ 'current' if currentPath == '/admin/senders' else '' }}"
+      >📱 Senders</a
+    >
+    {% endif %}
+
+    <a href="/logout">Logout</a>
     {% else %}
     <a
       class="{{ 'current' if currentPath == '/auth/login' else '' }}"
       href="/auth/login"
-      >login</a
+      >Login</a
     >
     {% endif %}
   </div>
