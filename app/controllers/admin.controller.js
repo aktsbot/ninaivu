@@ -11,6 +11,14 @@ export const getAdminSendersHomePage = (_req, res) => {
   });
 };
 
+export const getAdminSendersNewPage = (_req, res) => {
+  const meta = routeMeta["adminSendersNew"];
+
+  return res.render(meta.template, {
+    ...meta.meta,
+  });
+};
+
 export const getAdminPatientsHomePage = (_req, res) => {
   const meta = routeMeta["adminPatientsHome"];
 

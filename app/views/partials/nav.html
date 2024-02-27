@@ -12,17 +12,17 @@
     {% if user.userType == 'admin' %}
     <a
       href="/admin/patients"
-      class="{{ 'current' if currentPath == '/admin/patients' else '' }}"
+      class="{{ 'current' if '/admin/patients' in currentPath else '' }}"
       >🤕 Patients</a
     >
     <a
       href="/admin/messages"
-      class="{{ 'current' if currentPath == '/admin/messages' else '' }}"
+      class="{{ 'current' if '/admin/messages' in currentPath else '' }}"
       >✉️ Messages</a
     >
     <a
       href="/admin/senders"
-      class="{{ 'current' if currentPath == '/admin/senders' else '' }}"
+      class="{{ 'current' if '/admin/senders' in currentPath else '' }}"
       >📱 Senders</a
     >
     {% endif %}
