@@ -5,6 +5,8 @@ import {
   requireUser,
 } from "../middlewares/auth.middleware.js";
 
+import { validatePageSubmission } from "../middlewares/validate.middleware.js";
+
 import { routeMeta } from "./meta.js";
 
 import {
@@ -12,7 +14,12 @@ import {
   getAdminSendersNewPage,
   getAdminMessagesHomePage,
   getAdminPatientsHomePage,
+
+  // submissions
+  createSender,
 } from "../controllers/admin.controller.js";
+
+import { createSenderSchema } from "../validations/schemas/admin.schema.js";
 
 const router = Router();
 
@@ -25,5 +32,17 @@ router.get(
 );
 router.get("/patients", loadUserSession, requireUser, getAdminPatientsHomePage);
 router.get("/messages", loadUserSession, requireUser, getAdminMessagesHomePage);
+
+// api or page submissions
+router.post(
+  "/senders/new",
+  loadUserSession,
+  requireUser,
+  validatePageSubmission({
+    schema: createSenderSchema,
+    routeMeta: routeMeta["createSender"],
+  }),
+  createSender,
+);
 
 export default router;
