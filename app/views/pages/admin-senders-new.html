@@ -3,9 +3,34 @@
 {% block content %}
   <h1>New sender</h1>
   <p>
-    These are people who are aiding in sending SMS for the platform
-    from their mobile phones.
+  Adding a mobile number for a sender is entirely optional. However, it becomes useful
+  if a query from a patient comes in saying they received an "unexpected" SMS.
   </p>
+
+
+  <form action="/admin/senders/new" method="POST">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" required value="{{ body.name }}"/>
+  
+    <label for="mobileNumber">Mobile number</label>
+    <input type="text" id="mobileNumber" name="mobileNumber" value="{{ body.mobileNumber }}"/>
+
+
+    <fieldset>
+      <legend>Login details for sender</legend>
+        <label for="senderEmail">Email</label>
+        <input type="email" id="senderEmail" name="senderEmail" required value="{{ body.senderEmail }}"/>
+
+        <label for="senderPassword">Password</label>
+        <input type="text" id="senderPassword" name="senderPassword" required value="{{ body.senderPassword }}"/>
+    </fieldset>
+
+    <label for="notes">Notes</label>
+    <textarea id="notes" name="notes" rows="5">{{ body.mobileNumber }}</textarea>
+
+
+    <button class="btn btn-b" type="submit">Create sender</button>
+  </form>
 
 
 {% endblock %}
