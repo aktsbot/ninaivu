@@ -13,17 +13,17 @@
     <a
       href="/admin/patients"
       class="{{ 'current' if '/admin/patients' in currentPath else '' }}"
-      >🤕 Patients</a
+      ><span role="img" aria-label="patients page">🤕</span> Patients</a
     >
     <a
       href="/admin/messages"
       class="{{ 'current' if '/admin/messages' in currentPath else '' }}"
-      >✉️ Messages</a
+      ><span role="img" aria-label="messages page">✉️</span> Messages</a
     >
     <a
       href="/admin/senders"
       class="{{ 'current' if '/admin/senders' in currentPath else '' }}"
-      >📱 Senders</a
+      ><span role="img" aria-label="senders page">📱</span> Senders</a
     >
     {% endif %}
 

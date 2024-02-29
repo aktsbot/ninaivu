@@ -6,12 +6,35 @@ import User from "../models/user.model.js";
 import Sender from "../models/sender.model.js";
 
 // pages
-export const getAdminSendersHomePage = (_req, res) => {
-  const meta = routeMeta["adminSendersHome"];
+export const getAdminSendersHomePage = async (req, res) => {
+  try {
+    const meta = routeMeta["adminSendersHome"];
 
-  return res.render(meta.template, {
-    ...meta.meta,
-  });
+    const page = req.query.page || 1;
+    const limit = 10;
+    const skip = page * limit - limit;
+
+    const senders = await Sender.find(
+      {},
+      "uuid name mobileNumber user notes createdAt updatedAt",
+      { skip, limit },
+    ).populate("user", "email uuid status createdAt updatedAt");
+
+    logger.debug("senders");
+    logger.debug(senders);
+
+    return res.render(meta.template, {
+      ...meta.meta,
+      senders,
+      pagination: {
+        page,
+        limit,
+        skip,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const getAdminSendersNewPage = (_req, res) => {

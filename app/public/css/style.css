@@ -58,3 +58,11 @@
   background: #b22; /* darken(@btn-c-bg, 10%) */
 }
 /* end buttons */
+
+.text-center {
+  text-align: center;
+}
+
+.mt-1 {
+  margin-top: 0.5rem;
+}

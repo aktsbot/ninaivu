@@ -11,4 +11,50 @@
     <a href="/admin/senders/new">Add new sender</a>
   </div>
 
+  <div class="mt-1">
+    <form method="GET">
+      <input type="text" id="search" name="search" placeholder="search by name or mobile number" aria-label="search by name or mobile number" />
+    </form>
+  </div>
+
+  <div class="text-center">
+    <a href="#">&lt;Prev</a>
+    <span>Page 1 of 20</span>
+    <a href="#">Next&gt;</a>
+  </div>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Details</th>
+        <th>Notes</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for s in senders %}
+      <tr>
+        <td>{{ loop.index }}</td>
+
+        <td>
+          {{ s.name }} | {{ s.user.status }}<br />
+          {{ s.mobileNumber }} <br />
+          {{ s.user.email }} <br />
+        </td>
+
+        <td>
+          {{ s.notes }}
+        </td>
+
+        <td>
+          <a href="edit">Edit details</a> |
+          <a href="delete">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
 {% endblock %}
