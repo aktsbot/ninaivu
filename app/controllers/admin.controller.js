@@ -10,20 +10,31 @@ export const getAdminSendersHomePage = async (req, res) => {
   try {
     const meta = routeMeta["adminSendersHome"];
 
-    const page = req.query.page || 1;
+    const page = req.xop.query.page || 1;
     const limit = 2; // TODO: just for testing
     const skip = page * limit - limit;
 
     const query = {};
 
+    if (req.xop.query.search) {
+      query["$or"] = [
+        { name: { $regex: req.xop.query.search, $options: "i" } },
+        { mobileNumber: { $regex: req.xop.query.search, $options: "i" } },
+      ];
+    }
+
+    const totalCount = await Sender.countDocuments(query);
+
     const senders = await Sender.find(
-      {},
+      query,
       "uuid name mobileNumber user notes createdAt updatedAt",
       { skip, limit },
     ).populate("user", "email uuid status createdAt updatedAt");
 
     logger.debug("senders");
     logger.debug(senders);
+
+    const totalPages = Math.ceil(totalCount / limit);
 
     return res.render(meta.template, {
       ...meta.meta,
@@ -32,7 +43,10 @@ export const getAdminSendersHomePage = async (req, res) => {
         page,
         limit,
         skip,
+        totalCount,
+        totalPages,
       },
+      query: req.xop.query,
     });
   } catch (error) {
     next(error);
