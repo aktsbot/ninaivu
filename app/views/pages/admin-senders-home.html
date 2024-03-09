@@ -20,9 +20,13 @@
   </div>
 
   <div class="text-center">
-    <a href="#">&lt;Prev</a>
+    {% if pagination.page != 1 %}
+    <a href="{{ pagination.urls.prev }}">&lt;Prev</a>
+    {% endif %}
     <span>Page {{ pagination.page }} of {{ pagination.totalPages  }}</span>
-    <a href="#">Next&gt;</a>
+    {% if pagination.page < totalPages %}
+    <a href="{{ pagination.urls.next }}">Next&gt;</a>
+    {% endif %}
   </div>
   
   <table class="table">

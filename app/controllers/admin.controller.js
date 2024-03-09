@@ -15,8 +15,15 @@ export const getAdminSendersHomePage = async (req, res) => {
     const skip = page * limit - limit;
 
     const query = {};
+    const paginationUrls = {
+      prev: `${req.baseUrl + req.path}?`,
+      next: `${req.baseUrl + req.path}?`,
+    };
 
     if (req.xop.query.search) {
+      paginationUrls.prev += `&search=${req.xop.query.search}`;
+      paginationUrls.next += `&search=${req.xop.query.search}`;
+
       query["$or"] = [
         { name: { $regex: req.xop.query.search, $options: "i" } },
         { mobileNumber: { $regex: req.xop.query.search, $options: "i" } },
@@ -36,6 +43,17 @@ export const getAdminSendersHomePage = async (req, res) => {
 
     const totalPages = Math.ceil(totalCount / limit);
 
+    if (page != 1) {
+      paginationUrls.prev += `&page=${page - 1}`;
+    }
+
+    if (totalPages > page) {
+      paginationUrls.next += `&page=${page + 1}`;
+    }
+
+    logger.debug(`totalPages ${totalPages}`);
+    logger.debug(`page ${page}`);
+
     return res.render(meta.template, {
       ...meta.meta,
       senders,
@@ -45,6 +63,7 @@ export const getAdminSendersHomePage = async (req, res) => {
         skip,
         totalCount,
         totalPages,
+        urls: paginationUrls,
       },
       query: req.xop.query,
     });
