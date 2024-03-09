@@ -14,3 +14,13 @@ export const createSenderSchema = joi
     }),
   })
   .unknown(true);
+
+export const searchSendersSchema = joi
+  .object()
+  .keys({
+    query: joi.object().keys({
+      search: joi.string().allow(""),
+      page: joi.number().optional().min(1),
+    }),
+  })
+  .unknown(true);

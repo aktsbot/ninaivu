@@ -19,11 +19,23 @@ import {
   createSender,
 } from "../controllers/admin.controller.js";
 
-import { createSenderSchema } from "../validations/schemas/admin.schema.js";
+import {
+  createSenderSchema,
+  searchSendersSchema,
+} from "../validations/schemas/admin.schema.js";
 
 const router = Router();
 
-router.get("/senders", loadUserSession, requireUser, getAdminSendersHomePage);
+router.get(
+  "/senders",
+  loadUserSession,
+  requireUser,
+  validatePageSubmission({
+    schema: searchSendersSchema,
+    routeMeta: routeMeta["adminSendersHome"],
+  }),
+  getAdminSendersHomePage,
+);
 router.get(
   "/senders/new",
   loadUserSession,

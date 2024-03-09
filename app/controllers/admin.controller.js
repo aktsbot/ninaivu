@@ -11,8 +11,10 @@ export const getAdminSendersHomePage = async (req, res) => {
     const meta = routeMeta["adminSendersHome"];
 
     const page = req.query.page || 1;
-    const limit = 10;
+    const limit = 2; // TODO: just for testing
     const skip = page * limit - limit;
+
+    const query = {};
 
     const senders = await Sender.find(
       {},
