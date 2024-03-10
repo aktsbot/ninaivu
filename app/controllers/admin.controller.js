@@ -98,12 +98,68 @@ export const getAdminPatientsNewPage = (_req, res) => {
   });
 };
 
-export const getAdminMessagesHomePage = (_req, res) => {
-  const meta = routeMeta["adminMessagesHome"];
+export const getAdminMessagesHomePage = async (req, res, next) => {
+  try {
+    const meta = routeMeta["adminMessagesHome"];
+    const page = req.xop.query.page || 1;
+    const limit = 20;
+    const skip = page * limit - limit;
 
-  return res.render(meta.template, {
-    ...meta.meta,
-  });
+    const query = {};
+    const paginationUrls = {
+      prev: `${req.baseUrl + req.path}?`,
+      next: `${req.baseUrl + req.path}?`,
+    };
+
+    if (req.xop.query.search) {
+      paginationUrls.prev += `&search=${req.xop.query.search}`;
+      paginationUrls.next += `&search=${req.xop.query.search}`;
+
+      query["content"] = { $regex: req.xop.query.search, $options: "i" };
+    }
+
+    const promises = [
+      Message.countDocuments({}),
+      Message.countDocuments(query),
+      Message.find(query, "uuid content status createdAt updatedAt", {
+        skip,
+        limit,
+      }),
+    ];
+
+    const [allCount, totalCount, messages] = await Promise.all(promises);
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    if (page != 1) {
+      paginationUrls.prev += `&page=${page - 1}`;
+    }
+
+    if (totalPages > page) {
+      paginationUrls.next += `&page=${page + 1}`;
+    }
+
+    logger.debug(`totalPages ${totalPages}`);
+    logger.debug(`page ${page}`);
+
+    return res.render(meta.template, {
+      ...meta.meta,
+      messages,
+      allCount,
+      totalCount,
+      pagination: {
+        page,
+        limit,
+        skip,
+        totalCount,
+        totalPages,
+        urls: paginationUrls,
+      },
+      query: req.xop.query,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const getAdminMessagesNewPage = (_req, res) => {

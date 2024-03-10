@@ -1,7 +1,7 @@
 {%extends "partials/layout.html"%} 
 
 {% block content %}
-  <h1>Messages</h1>
+  <h1>Messages ({{ allCount }})</h1>
   <p>
   These are texts that would get sent to patients via senders.
   </p>
@@ -9,5 +9,55 @@
   <div>
     <a href="/admin/messages/new">Add new message</a>
   </div>
+
+   <div class="mt-1">
+    <form method="GET">
+      <input type="text" id="search" name="search" 
+        value="{{ query.search }}"
+        placeholder="search by content" aria-label="search by content" />
+    </form>
+  </div>
+
+  <div class="text-center">
+    <div>
+      {% if pagination.page != 1 %}
+      <a href="{{ pagination.urls.prev }}">&lt;Prev</a>
+      {% endif %}
+      <span>Page {{ pagination.page }} of {{ pagination.totalPages  }}</span>
+      {% if pagination.page < totalPages %}
+      <a href="{{ pagination.urls.next }}">Next&gt;</a>
+      {% endif %}
+    </div>
+
+    <div>
+      <small>{{ totalCount }} result(s) found</small>
+    </div>
+  </div>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Content</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for m in messages %}
+      <tr>
+        <td>{{ loop.index }}</td>
+
+        <td class="ws-pre">
+          {{ m.content }}
+        </td>
+        <td>
+          <a href="edit">Edit message</a> |
+          <a href="delete">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
 {% endblock %}

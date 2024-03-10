@@ -64,7 +64,16 @@ router.get(
   requireUser,
   getAdminPatientsNewPage,
 );
-router.get("/messages", loadUserSession, requireUser, getAdminMessagesHomePage);
+router.get(
+  "/messages",
+  loadUserSession,
+  requireUser,
+  validatePageSubmission({
+    schema: searchSchema,
+    routeMeta: routeMeta["adminMessagesHome"],
+  }),
+  getAdminMessagesHomePage,
+);
 router.get(
   "/messages/new",
   loadUserSession,
