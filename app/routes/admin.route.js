@@ -23,7 +23,7 @@ import {
 
 import {
   createSenderSchema,
-  searchSendersSchema,
+  searchSchema,
   createPatientSchema,
 } from "../validations/schemas/admin.schema.js";
 
@@ -34,7 +34,7 @@ router.get(
   loadUserSession,
   requireUser,
   validatePageSubmission({
-    schema: searchSendersSchema,
+    schema: searchSchema,
     routeMeta: routeMeta["adminSendersHome"],
   }),
   getAdminSendersHomePage,
@@ -45,7 +45,16 @@ router.get(
   requireUser,
   getAdminSendersNewPage,
 );
-router.get("/patients", loadUserSession, requireUser, getAdminPatientsHomePage);
+router.get(
+  "/patients",
+  loadUserSession,
+  requireUser,
+  validatePageSubmission({
+    schema: searchSchema,
+    routeMeta: routeMeta["adminPatientsHome"],
+  }),
+  getAdminPatientsHomePage,
+);
 router.get(
   "/patients/new",
   loadUserSession,

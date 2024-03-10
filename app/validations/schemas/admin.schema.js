@@ -15,11 +15,11 @@ export const createSenderSchema = joi
   })
   .unknown(true);
 
-export const searchSendersSchema = joi
+export const searchSchema = joi
   .object()
   .keys({
     query: joi.object().keys({
-      search: joi.string().allow(""),
+      search: joi.string().allow("").optional(),
       page: joi.number().optional().min(1),
     }),
   })

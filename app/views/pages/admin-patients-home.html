@@ -1,7 +1,7 @@
 {%extends "partials/layout.html"%} 
 
 {% block content %}
-  <h1>Patients</h1>
+  <h1>Patients ({{ allCount }})</h1>
   <p>
   People to whom messages will be sent to.
   </p>
@@ -10,5 +10,76 @@
     <a href="/admin/patients/new">Add new patient</a>
   </div>
 
+  <div class="mt-1">
+    <form method="GET">
+      <input type="text" id="search" name="search" 
+        value="{{ query.search }}"
+        placeholder="search by name, patient id or mobile number" aria-label="search by name, patient id or mobile number" />
+    </form>
+  </div>
+
+  <div class="text-center">
+    <div>
+      {% if pagination.page != 1 %}
+      <a href="{{ pagination.urls.prev }}">&lt;Prev</a>
+      {% endif %}
+      <span>Page {{ pagination.page }} of {{ pagination.totalPages  }}</span>
+      {% if pagination.page < totalPages %}
+      <a href="{{ pagination.urls.next }}">Next&gt;</a>
+      {% endif %}
+    </div>
+
+    <div>
+      <small>{{ totalCount }} result(s) found</small>
+    </div>
+  </div>
+  
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Patient Info</th>
+        <th>Mobile numbers</th>
+        <th>Messages every</th>
+        <th>Notes</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for p in patients %}
+      <tr>
+        <td>{{ loop.index }}</td>
+
+        <td>
+          {{ p.patientId }} <br />
+          {{ p.name }} <br />
+          {{ p.status }}
+        </td>
+
+        <td>
+          {% for m in p.mobileNumbers %}
+          {{ m }} <br />
+          {% endfor %}
+        </td>
+
+        <td>
+          {% for d in p.messagesEvery %}
+          {{ d }} <br />
+          {% endfor %}
+        </td>
+
+        <td class="ws-pre">
+          {{ p.notes }}
+        </td>
+
+        <td>
+          <a href="edit">Edit details</a> |
+          <a href="delete">Delete</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 
 {% endblock %}

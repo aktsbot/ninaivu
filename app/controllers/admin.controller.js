@@ -88,11 +88,12 @@ export const getAdminSendersNewPage = (_req, res) => {
   });
 };
 
-export const getAdminPatientsHomePage = (_req, res) => {
-  const meta = routeMeta["adminPatientsHome"];
+export const getAdminPatientsNewPage = (_req, res) => {
+  const meta = routeMeta["adminPatientsNew"];
 
   return res.render(meta.template, {
     ...meta.meta,
+    patientMessageDays,
   });
 };
 
@@ -104,13 +105,76 @@ export const getAdminMessagesHomePage = (_req, res) => {
   });
 };
 
-export const getAdminPatientsNewPage = (_req, res) => {
-  const meta = routeMeta["adminPatientsNew"];
+export const getAdminPatientsHomePage = async (req, res, next) => {
+  try {
+    const meta = routeMeta["adminPatientsHome"];
 
-  return res.render(meta.template, {
-    ...meta.meta,
-    patientMessageDays,
-  });
+    const page = req.xop.query.page || 1;
+    const limit = 20;
+    const skip = page * limit - limit;
+
+    const query = {};
+    const paginationUrls = {
+      prev: `${req.baseUrl + req.path}?`,
+      next: `${req.baseUrl + req.path}?`,
+    };
+
+    if (req.xop.query.search) {
+      paginationUrls.prev += `&search=${req.xop.query.search}`;
+      paginationUrls.next += `&search=${req.xop.query.search}`;
+
+      query["$or"] = [
+        { name: { $regex: req.xop.query.search, $options: "i" } },
+        { patientId: req.xop.query.search },
+        {
+          mobileNumbers: req.xop.query.search,
+        },
+      ];
+    }
+
+    const promises = [
+      Patient.countDocuments({}),
+      Patient.countDocuments(query),
+      Patient.find(
+        query,
+        "uuid name status mobileNumbers messagesEvery patientId notes createdAt updatedAt",
+        { skip, limit },
+      ),
+    ];
+
+    const [allCount, totalCount, patients] = await Promise.all(promises);
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    if (page != 1) {
+      paginationUrls.prev += `&page=${page - 1}`;
+    }
+
+    if (totalPages > page) {
+      paginationUrls.next += `&page=${page + 1}`;
+    }
+
+    logger.debug(`totalPages ${totalPages}`);
+    logger.debug(`page ${page}`);
+
+    return res.render(meta.template, {
+      ...meta.meta,
+      patients,
+      allCount,
+      totalCount,
+      pagination: {
+        page,
+        limit,
+        skip,
+        totalCount,
+        totalPages,
+        urls: paginationUrls,
+      },
+      query: req.xop.query,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 // page submissions
@@ -162,12 +226,13 @@ export const createSender = async (req, res, next) => {
 };
 
 export const createPatient = async (req, res, next) => {
-  const meta = routeMeta["adminSendersNew"];
+  const meta = routeMeta["adminPatientsNew"];
 
   try {
     const { body } = req.xop;
     const patient = await new Patient({
       ...body,
+      mobileNumbers: body.mobileNumbers.split(",").map((n) => n.trim()),
       createdBy: res.locals.user._id,
     }).save();
 
