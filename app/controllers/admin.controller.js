@@ -105,6 +105,14 @@ export const getAdminMessagesHomePage = (_req, res) => {
   });
 };
 
+export const getAdminMessagesNewPage = (_req, res) => {
+  const meta = routeMeta["adminMessagesNew"];
+
+  return res.render(meta.template, {
+    ...meta.meta,
+  });
+};
+
 export const getAdminPatientsHomePage = async (req, res, next) => {
   try {
     const meta = routeMeta["adminPatientsHome"];

@@ -78,4 +78,10 @@ export const routeMeta = {
       title: "Messages",
     },
   },
+  adminMessagesNew: {
+    template: "pages/admin-messages-new.html",
+    meta: {
+      title: "New message",
+    },
+  },
 };
