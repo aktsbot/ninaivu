@@ -37,3 +37,12 @@ export const createPatientSchema = joi
     }),
   })
   .unknown(true);
+
+export const createMessageSchema = joi
+  .object()
+  .keys({
+    body: joi.object().keys({
+      content: joi.string().required(),
+    }),
+  })
+  .unknown(true);

@@ -6,6 +6,7 @@ import { patientMessageDays } from "../utils.js";
 import User from "../models/user.model.js";
 import Sender from "../models/sender.model.js";
 import Patient from "../models/patient.model.js";
+import Message from "../models/message.model.js";
 
 // pages
 export const getAdminSendersHomePage = async (req, res) => {
@@ -249,6 +250,25 @@ export const createPatient = async (req, res, next) => {
     ]);
 
     res.redirect("/admin/patients");
+    return;
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const createMessage = async (req, res, next) => {
+  const meta = routeMeta["adminMessagesNew"];
+
+  try {
+    const { body } = req.xop;
+    await new Message({
+      ...body,
+      createdBy: res.locals.user._id,
+    }).save();
+
+    req.flash("success", [`Message has been created successfully.`]);
+
+    res.redirect("/admin/messages");
     return;
   } catch (error) {
     next(error);

@@ -20,12 +20,14 @@ import {
   // submissions
   createSender,
   createPatient,
+  createMessage,
 } from "../controllers/admin.controller.js";
 
 import {
   createSenderSchema,
   searchSchema,
   createPatientSchema,
+  createMessageSchema,
 } from "../validations/schemas/admin.schema.js";
 
 const router = Router();
@@ -77,7 +79,7 @@ router.post(
   requireUser,
   validatePageSubmission({
     schema: createSenderSchema,
-    routeMeta: routeMeta["createSender"],
+    routeMeta: routeMeta["adminSendersNew"],
   }),
   createSender,
 );
@@ -87,9 +89,19 @@ router.post(
   requireUser,
   validatePageSubmission({
     schema: createPatientSchema,
-    routeMeta: routeMeta["createPatient"],
+    routeMeta: routeMeta["adminPatientsNew"],
   }),
   createPatient,
+);
+router.post(
+  "/messages/new",
+  loadUserSession,
+  requireUser,
+  validatePageSubmission({
+    schema: createMessageSchema,
+    routeMeta: routeMeta["adminMessagesNew"],
+  }),
+  createMessage,
 );
 
 export default router;
