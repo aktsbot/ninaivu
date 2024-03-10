@@ -66,3 +66,7 @@
 .mt-1 {
   margin-top: 0.5rem;
 }
+
+.ws-pre {
+  white-space: pre-line;
+}
