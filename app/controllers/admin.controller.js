@@ -1,6 +1,7 @@
 import logger from "../logger.js";
 
 import { routeMeta } from "../routes/meta.js";
+import { patientMessageDays } from "../utils.js";
 
 import User from "../models/user.model.js";
 import Sender from "../models/sender.model.js";
@@ -99,6 +100,15 @@ export const getAdminMessagesHomePage = (_req, res) => {
 
   return res.render(meta.template, {
     ...meta.meta,
+  });
+};
+
+export const getAdminPatientsNewPage = (_req, res) => {
+  const meta = routeMeta["adminPatientsNew"];
+
+  return res.render(meta.template, {
+    ...meta.meta,
+    patientMessageDays,
   });
 };
 

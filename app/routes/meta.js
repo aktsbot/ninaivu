@@ -58,6 +58,18 @@ export const routeMeta = {
       title: "Patients",
     },
   },
+  adminPatientsNew: {
+    template: "pages/admin-patients-new.html",
+    meta: {
+      title: "New patient",
+    },
+  },
+  adminPatientsEdit: {
+    template: "pages/admin-patients-edit.html",
+    meta: {
+      title: "Edit patient",
+    },
+  },
 
   // -- messages
   adminMessagesHome: {

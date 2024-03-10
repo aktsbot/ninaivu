@@ -70,3 +70,9 @@
 .ws-pre {
   white-space: pre-line;
 }
+
+input[type="checkbox"] {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+}

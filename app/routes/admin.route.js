@@ -14,6 +14,7 @@ import {
   getAdminSendersNewPage,
   getAdminMessagesHomePage,
   getAdminPatientsHomePage,
+  getAdminPatientsNewPage,
 
   // submissions
   createSender,
@@ -43,6 +44,12 @@ router.get(
   getAdminSendersNewPage,
 );
 router.get("/patients", loadUserSession, requireUser, getAdminPatientsHomePage);
+router.get(
+  "/patients/new",
+  loadUserSession,
+  requireUser,
+  getAdminPatientsNewPage,
+);
 router.get("/messages", loadUserSession, requireUser, getAdminMessagesHomePage);
 
 // api or page submissions

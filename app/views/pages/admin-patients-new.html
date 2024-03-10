@@ -1,0 +1,48 @@
+{%extends "partials/layout.html"%}
+
+<!-- add patient -->
+{% block content %}
+
+<h1>New patient</h1>
+
+<form action="/admin/patients/new" method="POST">
+  <label for="name">Name</label>
+  <input type="text" id="name" name="name" required value="{{ body.name }}" />
+
+  <label for="patientId">Patient ID</label>
+  <input
+    type="text"
+    id="patientId"
+    name="patientId"
+    required
+    value="{{ body.patientId }}"
+  />
+
+  <label for="mobileNumbers">Mobile numbers (comma separated)</label>
+  <textarea
+    rows="3"
+    id="mobileNumbers"
+    name="mobileNumbers"
+    value="{{ body.mobileNumbers }}"
+    placeholder="9899098909,8734560987"
+  ></textarea>
+
+  <fieldset>
+    <legend>Message should be sent every</legend>
+
+    {% for d in patientMessageDays %}
+
+    <div>
+      <input type="checkbox" id="{{ d.value }}" name="messagesEvery" />
+      <label for="{{ d.value }}">{{ d.text }}</label>
+    </div>
+    {% endfor %}
+  </fieldset>
+
+  <label for="notes">Notes</label>
+  <textarea id="notes" name="notes" rows="5">{{ body.mobileNumber }}</textarea>
+
+  <button class="btn btn-b" type="submit">Create patient</button>
+</form>
+
+{% endblock %}

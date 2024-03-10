@@ -24,3 +24,16 @@ export const searchSendersSchema = joi
     }),
   })
   .unknown(true);
+
+export const createPatientSchema = joi
+  .object()
+  .keys({
+    body: joi.object().keys({
+      patientId: joi.string().required(),
+      name: joi.string().required(),
+      mobileNumbers: joi.string().required(),
+      notes: joi.string().allow(""),
+      messagesEvery: joi.string().required(),
+    }),
+  })
+  .unknown(true);
