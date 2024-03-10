@@ -33,7 +33,7 @@ export const createPatientSchema = joi
       name: joi.string().required(),
       mobileNumbers: joi.string().required(),
       notes: joi.string().allow(""),
-      messagesEvery: joi.string().required(),
+      messagesEvery: joi.array().items(joi.string().required()).required(),
     }),
   })
   .unknown(true);

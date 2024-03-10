@@ -18,11 +18,13 @@ import {
 
   // submissions
   createSender,
+  createPatient,
 } from "../controllers/admin.controller.js";
 
 import {
   createSenderSchema,
   searchSendersSchema,
+  createPatientSchema,
 } from "../validations/schemas/admin.schema.js";
 
 const router = Router();
@@ -62,6 +64,16 @@ router.post(
     routeMeta: routeMeta["createSender"],
   }),
   createSender,
+);
+router.post(
+  "/patients/new",
+  loadUserSession,
+  requireUser,
+  validatePageSubmission({
+    schema: createPatientSchema,
+    routeMeta: routeMeta["createPatient"],
+  }),
+  createPatient,
 );
 
 export default router;

@@ -33,7 +33,12 @@
     {% for d in patientMessageDays %}
 
     <div>
-      <input type="checkbox" id="{{ d.value }}" name="messagesEvery" />
+      <input
+        type="checkbox"
+        id="{{ d.value }}"
+        name="messagesEvery"
+        value="{{d.value}}"
+      />
       <label for="{{ d.value }}">{{ d.text }}</label>
     </div>
     {% endfor %}
