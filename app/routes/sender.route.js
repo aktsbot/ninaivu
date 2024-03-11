@@ -13,6 +13,6 @@ import { getSendersHomePage } from "../controllers/sender.controller.js";
 
 const router = Router();
 
-router.get("/send-message", loadUserSession, requireUser, getSendersHomePage);
+router.get("/", loadUserSession, requireUser, getSendersHomePage);
 
 export default router;

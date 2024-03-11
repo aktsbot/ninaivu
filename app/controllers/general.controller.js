@@ -8,7 +8,7 @@ export const getHomePage = (_req, res) => {
   logger.debug(res.locals.user);
 
   if (res.locals.user && res.locals.user.userType === "sender") {
-    return res.redirect("/sender/send-message");
+    return res.redirect("/sender");
   }
 
   const meta = routeMeta["home"];

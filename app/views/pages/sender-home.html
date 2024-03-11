@@ -2,6 +2,33 @@
 
 <!-- sender home page -->
 {% block content %}
-<h1>Send message</h1>
+<div>
+  <h3>Message</h3>
+  <div>
+    <pre>This is the message to be sent.</pre>
+  </div>
+
+  <h3>Contact</h3>
+  <p>+918176590987,+919087654312</p>
+
+  <a href="" class="btn btn-b">Send SMS</a>
+</div>
+
+<div class="py-100px"></div>
+
+<form action="/sender" method="GET">
+  <div>
+    <input
+      type="checkbox"
+      id="confirmSent"
+      name="confirmSent"
+      value="yes"
+      required
+    />
+    <label for="confirmSent">I have sent this message</label>
+  </div>
+
+  <button type="submit" class="btn btn-a btn-sm">Get new message</button>
+</form>
 
 {% endblock %}
