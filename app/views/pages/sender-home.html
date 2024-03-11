@@ -5,13 +5,17 @@
 <div>
   <h3>Message</h3>
   <div>
-    <pre>This is the message to be sent.</pre>
+    <pre>{{ message.content }}</pre>
   </div>
 
-  <h3>Contact</h3>
-  <p>+918176590987,+919087654312</p>
+  <h3>Contact ({{ patient.patientId }})</h3>
+  <p>{{ patient.mobileNumbers | join(', ') }}</p>
 
-  <a href="" class="btn btn-b">Send SMS</a>
+  <a
+    href="sms:{{ patient.mobileNumbers | join(',') }}?body={{ message.content | urlencode }}"
+    class="btn btn-b"
+    >Send SMS</a
+  >
 </div>
 
 <div class="py-100px"></div>
