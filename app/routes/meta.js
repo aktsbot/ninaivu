@@ -84,4 +84,12 @@ export const routeMeta = {
       title: "New message",
     },
   },
+
+  // -- home for senders
+  sendersHome: {
+    template: "pages/sender-home.html",
+    meta: {
+      title: "Send message",
+    },
+  },
 };
