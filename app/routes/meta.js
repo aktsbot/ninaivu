@@ -84,7 +84,12 @@ export const routeMeta = {
       title: "New message",
     },
   },
-
+  adminMessagesEdit: {
+    template: "pages/admin-messages-edit.html",
+    meta: {
+      title: "Edit message",
+    },
+  },
   // -- home for senders
   sendersHome: {
     template: "pages/sender-home.html",

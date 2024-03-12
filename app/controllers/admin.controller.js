@@ -242,6 +242,17 @@ export const getAdminPatientsHomePage = async (req, res, next) => {
   }
 };
 
+export const getAdminMessagesEditPage = async (req, res, next) => {
+  try {
+    const meta = routeMeta["adminMessagesEdit"];
+    return res.render(meta.template, {
+      ...meta.meta,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // page submissions
 
 export const createSender = async (req, res, next) => {

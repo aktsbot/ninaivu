@@ -52,8 +52,8 @@
           {{ m.content }}
         </td>
         <td>
-          <a href="edit">Edit message</a> |
-          <a href="delete">Delete</a>
+          <a href="{{currentPath}}/{{m.uuid}}/edit">Edit message</a> |
+          <a href="{{currentPath}}/{{m.uuid}}/delete">Delete</a>
         </td>
       </tr>
       {% endfor %}
