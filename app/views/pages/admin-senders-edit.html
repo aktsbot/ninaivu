@@ -13,10 +13,33 @@
 
     <strong>Login details</strong>
     <p>Email: {{ sender.user.email }}</p>
-    <p>Password cannot be viewed.</p>
 
     <p>Notes: <span class="ws-pre">{{ sender.notes }}</span></p>
   </div>
 
+
+  <h3>Update sender - {{ sender.name }}</h3>
+  <form action="/admin/senders/{{ sender.uuid }}/update" method="POST">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" required value="{{ sender.name }}"/>
+  
+    <label for="mobileNumber">Mobile number</label>
+    <input type="text" id="mobileNumber" name="mobileNumber" value="{{ sender.mobileNumber }}"/>
+
+
+    <fieldset>
+      <legend>Login details for sender</legend>
+        <label for="senderEmail">Email</label>
+        <input type="email" id="senderEmail" name="senderEmail" required value="{{ sender.user.email }}"/>
+
+        <small>Password can be set via the forgot password page.</small>
+    </fieldset>
+
+    <label for="notes">Notes</label>
+    <textarea id="notes" name="notes" rows="5">{{ sender.notes }}</textarea>
+
+
+    <button class="btn btn-b" type="submit">Update sender</button>
+  </form>
 
 {% endblock %}
