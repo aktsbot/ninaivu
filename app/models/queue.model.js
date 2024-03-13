@@ -39,6 +39,10 @@ const QueueSchema = new mongoose.Schema(
       type: String,
       default: "00-created", // 00-created, 01-sent-to-sender, 03-sent-to-patient, 10-try-another-sender
     },
+    forDate: {
+      type: Date,
+      default: Date.now, // will be same as createdAt, but we will store this for readability
+    },
   },
   {
     timestamps: true,

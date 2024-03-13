@@ -1,6 +1,7 @@
 import cron from "node-cron";
 
 import logger from "../logger.js";
+import { makePatientQueueForDay } from "./services.js";
 
 const days = [
   "sunday",
@@ -25,19 +26,25 @@ async function queuer() {
   // insert the list into queue collection - status
   //
   try {
-    const date = new Date();
     const day = days[new Date().getDay()];
     const startOfDay = new Date();
     startOfDay.setUTCHours(0, 0, 0, 0);
 
-    // const date = '2023-03-27T03:20:01.041Z'
-    // const day = 'tuesday'
+    // --- for testing only!
+    // const date = "2024-05-03T03:20:01.041Z";
+    // const day = "friday";
+    // const startOfDay = new Date(date);
+    // startOfDay.setUTCHours(0, 0, 0, 0);
+
+    await makePatientQueueForDay({ day, startOfDay });
   } catch (error) {
     logger.error(error);
   }
 }
 
-cron.schedule("* * * * *", () => {
-  logger.info("running cron task every minute: queuer");
-  queuer();
-});
+export const startCrons = () => {
+  cron.schedule("* * * * *", () => {
+    logger.info("running cron task every minute: queuer");
+    queuer();
+  });
+};

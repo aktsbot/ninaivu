@@ -17,6 +17,7 @@ import {
 import appRouter from "./routes/index.js";
 
 import { appSession } from "./session.js";
+import { startCrons } from "./cron/index.js";
 
 // node 20.11 and up
 const __dirname = import.meta.dirname;
@@ -65,6 +66,11 @@ const server = app.listen(config.port, (err) => {
 
   logger.info(`app started on port ${config.port}`);
   connectDB();
+
+  // after a while start running the crons
+  setTimeout(() => {
+    startCrons();
+  }, 300);
 });
 
 // clean up - when server dies, make sure db connection
