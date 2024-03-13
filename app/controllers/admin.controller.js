@@ -404,3 +404,47 @@ export const deleteMessage = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateSender = async (req, res, next) => {
+  try {
+    const errorMessage = "This email is already being used by a user.";
+
+    const { body } = req.xop;
+
+    const senderInfo = await Sender.findOne({
+      uuid: req.params.uuid,
+    }).populate("user", "uuid email fullName");
+
+    // check if this email is in use by someone else
+    const emailUsed = await User.countDocuments({
+      uuid: {
+        $ne: senderInfo.user.uuid,
+      },
+      email: body.senderEmail,
+    });
+
+    if (emailUsed) {
+      req.flash("error", errorMessage);
+      return res.redirect(req.header("referer"));
+    }
+
+    senderInfo.name = body.name;
+    senderInfo.mobileNumber = body.mobileNumber;
+    senderInfo.notes = body.notes;
+
+    senderInfo.user.fullName = body.name;
+    senderInfo.user.email = body.senderEmail;
+
+    await senderInfo.save();
+    await senderInfo.user.save();
+
+    req.flash("success", [
+      `Sender ${senderInfo.user.fullName} (${senderInfo.mobileNumber}) has been updated successfully.`,
+    ]);
+
+    res.redirect("/admin/senders");
+    return;
+  } catch (error) {
+    next(error);
+  }
+};

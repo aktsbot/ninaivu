@@ -58,3 +58,18 @@ export const updateMessageSchema = joi
     }),
   })
   .unknown(true);
+
+export const updateSenderSchema = joi
+  .object()
+  .keys({
+    params: joi.object().keys({
+      uuid: joi.string().guid().required(),
+    }),
+    body: joi.object().keys({
+      name: joi.string().required(),
+      mobileNumber: joi.string().required(),
+      senderEmail: joi.string().email().required(),
+      notes: joi.string().allow(""),
+    }),
+  })
+  .unknown(true);
