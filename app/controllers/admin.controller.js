@@ -498,3 +498,27 @@ export const deleteSender = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updatePatient = async (req, res, next) => {
+  try {
+    const { body } = req.xop;
+
+    await Patient.updateOne(
+      {
+        uuid: req.params.uuid,
+      },
+      {
+        $set: {
+          ...body,
+        },
+      },
+    );
+
+    req.flash("success", [`Patient has been updated successfully.`]);
+
+    res.redirect("/admin/patients");
+    return;
+  } catch (error) {
+    next(error);
+  }
+};

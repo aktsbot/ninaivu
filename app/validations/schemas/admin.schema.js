@@ -73,3 +73,19 @@ export const updateSenderSchema = joi
     }),
   })
   .unknown(true);
+
+export const updatePatientSchema = joi
+  .object()
+  .keys({
+    params: joi.object().keys({
+      uuid: joi.string().guid().required(),
+    }),
+    body: joi.object().keys({
+      patientId: joi.string().required(),
+      name: joi.string().required(),
+      mobileNumbers: joi.string().required(),
+      notes: joi.string().allow(""),
+      messagesEvery: joi.array().items(joi.string().required()).required(),
+    }),
+  })
+  .unknown(true);

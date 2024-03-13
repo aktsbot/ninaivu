@@ -28,6 +28,7 @@ import {
   deleteMessage,
   updateSender,
   deleteSender,
+  updatePatient,
 } from "../controllers/admin.controller.js";
 
 import {
@@ -37,6 +38,7 @@ import {
   createMessageSchema,
   updateMessageSchema,
   updateSenderSchema,
+  updatePatientSchema,
 } from "../validations/schemas/admin.schema.js";
 
 const router = Router();
@@ -170,5 +172,16 @@ router.post(
   updateSender,
 );
 router.get("/senders/:uuid/delete", loadUserSession, requireUser, deleteSender);
+router.post(
+  "/patients/:uuid/update",
+  loadUserSession,
+  requireUser,
+  validatePageSubmission({
+    schema: updatePatientSchema,
+    routeMeta: routeMeta["adminPatientsEdit"],
+    goBackOnError: true,
+  }),
+  updatePatient,
+);
 
 export default router;
