@@ -1,7 +1,22 @@
 {%extends "partials/layout.html"%} 
 
 {% block content %}
+
+  {% include 'partials/back-btn.html' %}
+
   <h1>Edit sender</h1>
+
+  <div class="original-data">
+    <h3>Original sender information</h3>
+    <p>Name: {{ sender.name }}</p>
+    <p>Mobile number: {{ sender.mobileNumber }}</p>
+
+    <strong>Login details</strong>
+    <p>Email: {{ sender.user.email }}</p>
+    <p>Password cannot be viewed.</p>
+
+    <p>Notes: <span class="ws-pre">{{ sender.notes }}</span></p>
+  </div>
 
 
 {% endblock %}

@@ -89,6 +89,23 @@ export const getAdminSendersNewPage = (_req, res) => {
   });
 };
 
+export const getAdminSenderEditPage = async (req, res, next) => {
+  try {
+    const meta = routeMeta["adminSendersEdit"];
+    const sender = await Sender.findOne(
+      { uuid: req.params.uuid },
+      "uuid name mobileNumber notes user createdAt",
+    ).populate("user", "fullName email uuid");
+
+    return res.render(meta.template, {
+      ...meta.meta,
+      sender,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getAdminPatientsNewPage = (_req, res) => {
   const meta = routeMeta["adminPatientsNew"];
 
