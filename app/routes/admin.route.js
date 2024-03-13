@@ -22,6 +22,7 @@ import {
   createSender,
   createPatient,
   createMessage,
+  updateMessage,
 } from "../controllers/admin.controller.js";
 
 import {
@@ -29,6 +30,7 @@ import {
   searchSchema,
   createPatientSchema,
   createMessageSchema,
+  updateMessageSchema,
 } from "../validations/schemas/admin.schema.js";
 
 const router = Router();
@@ -118,6 +120,16 @@ router.post(
     routeMeta: routeMeta["adminMessagesNew"],
   }),
   createMessage,
+);
+router.post(
+  "/messages/:uuid/update",
+  loadUserSession,
+  requireUser,
+  validatePageSubmission({
+    schema: updateMessageSchema,
+    routeMeta: routeMeta["adminMessagesEdit"],
+  }),
+  updateMessage,
 );
 
 export default router;

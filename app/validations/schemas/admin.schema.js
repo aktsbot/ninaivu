@@ -46,3 +46,15 @@ export const createMessageSchema = joi
     }),
   })
   .unknown(true);
+
+export const updateMessageSchema = joi
+  .object()
+  .keys({
+    params: joi.object().keys({
+      uuid: joi.string().guid().required(),
+    }),
+    body: joi.object().keys({
+      content: joi.string().required(),
+    }),
+  })
+  .unknown(true);

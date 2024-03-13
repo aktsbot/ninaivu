@@ -346,3 +346,29 @@ export const createMessage = async (req, res, next) => {
     next(error);
   }
 };
+
+export const updateMessage = async (req, res, next) => {
+  const meta = routeMeta["adminMessagesEdit"];
+
+  try {
+    const { body } = req.xop;
+
+    await Message.updateOne(
+      {
+        uuid: req.params.uuid,
+      },
+      {
+        $set: {
+          ...body,
+        },
+      },
+    );
+
+    req.flash("success", [`Message has been updated successfully.`]);
+
+    res.redirect("/admin/messages");
+    return;
+  } catch (error) {
+    next(error);
+  }
+};
