@@ -21,6 +21,7 @@
     "express-session": "^1.18.0",
     "joi": "^17.11.0",
     "mongoose": "^8.0.2",
+    "node-cron": "^3.0.3",
     "nodemailer": "^6.9.7",
     "nunjucks": "^3.2.4",
     "pino": "^8.16.2",
