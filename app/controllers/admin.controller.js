@@ -245,8 +245,13 @@ export const getAdminPatientsHomePage = async (req, res, next) => {
 export const getAdminMessagesEditPage = async (req, res, next) => {
   try {
     const meta = routeMeta["adminMessagesEdit"];
+    const message = await Message.findOne(
+      { uuid: req.params.uuid },
+      "uuid content status createdAt",
+    );
     return res.render(meta.template, {
       ...meta.meta,
+      message,
     });
   } catch (error) {
     next(error);

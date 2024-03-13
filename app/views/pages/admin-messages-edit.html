@@ -1,20 +1,27 @@
 {%extends "partials/layout.html"%}
 
 <!-- edit message -->
-{% block content %}
+{% block content %} {% include 'partials/back-btn.html' %}
 
 <h1>Edit message</h1>
 
-<form action="/admin/messages/{{ x }}/edit" method="POST">
+<div class="original-data">
+  <h3>Original message content</h3>
+  <p class="ws-pre">{{message.content}}</p>
+</div>
+
+<h2>Update message</h2>
+<form action="/admin/messages/{{ message.uuid }}/edit" method="POST">
   <label for="content">Message content</label>
   <textarea
     rows="5"
     id="content"
     name="content"
-    value="body.content"
     placeholder="This is the SMS that you'd be sending to patients"
     required
-  ></textarea>
+  >
+{{ message.content }}</textarea
+  >
 
   <button class="btn btn-b" type="submit">Update message</button>
 </form>
