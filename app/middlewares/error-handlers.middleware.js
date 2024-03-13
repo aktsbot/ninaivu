@@ -1,3 +1,5 @@
+import logger from "../logger.js";
+
 export const notFound = (req, res, next) => {
   next({
     status: 404,
@@ -18,6 +20,10 @@ export const errorHandler = (error, req, res, next) => {
       messageCode,
     });
   }
+
+  logger.debug(`--- Error ---`);
+  logger.debug(error);
+  logger.debug(`--- Error ---`);
 
   res.status(status);
   return res.render("pages/error.html", {

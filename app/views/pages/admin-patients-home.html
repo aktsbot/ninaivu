@@ -74,8 +74,8 @@
         </td>
 
         <td>
-          <a href="edit">Edit details</a> |
-          <a href="delete">Delete</a>
+          <a href="{{currentPath}}/{{p.uuid}}/edit">Edit details</a> |
+          <a href="{{currentPath}}/{{p.uuid}}/delete" class="confirm-delete">Delete</a>
         </td>
       </tr>
       {% endfor %}

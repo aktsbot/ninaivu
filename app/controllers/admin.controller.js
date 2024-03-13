@@ -281,6 +281,20 @@ export const getAdminMessagesEditPage = async (req, res, next) => {
   }
 };
 
+export const getAdminPatientsEditPage = async (req, res, next) => {
+  try {
+    const meta = routeMeta["adminPatientsEdit"];
+    const patient = await Patient.findOne({ uuid: req.params.uuid });
+    return res.render(meta.template, {
+      ...meta.meta,
+      patient,
+      patientMessageDays,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // page submissions
 
 export const createSender = async (req, res, next) => {

@@ -18,6 +18,7 @@ import {
   getAdminMessagesNewPage,
   getAdminMessagesEditPage,
   getAdminSenderEditPage,
+  getAdminPatientsEditPage,
 
   // submissions
   createSender,
@@ -78,6 +79,12 @@ router.get(
   loadUserSession,
   requireUser,
   getAdminPatientsNewPage,
+);
+router.get(
+  "/patients/:uuid/edit",
+  loadUserSession,
+  requireUser,
+  getAdminPatientsEditPage,
 );
 
 router.get(

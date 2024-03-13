@@ -2,5 +2,66 @@
 
 <!-- edit patient -->
 {% block content %}
-<p>Edit patient</p>
+
+{% include 'partials/back-btn.html' %}
+
+<h1>Edit patient</h1>
+
+<div class="original-data">
+  <h3>Original patient details</h3>
+  <p>Name: {{ patient.name }}</p>
+  <p>Patient ID: {{ patient.patientId }}</p>
+  <p>Mobile numbers: {{ patient.mobileNumbers | join(', ') }}</p>
+
+  <p>Messages every: {{ patient.messagesEvery | join(', ') }}</p>
+
+  <p class="ws-pre">Notes: {{ patient.notes }}</p>
+</div>
+
+<h2>Update patient - {{ patient.name }}</h2>
+<form action="/admin/patients/{{ patient.uuid }}/update" method="POST">
+  <label for="name">Name</label>
+  <input type="text" id="name" name="name" required value="{{ patient.name }}" />
+
+  
+  <label for="patientId">Patient ID</label>
+  <input
+    type="text"
+    id="patientId"
+    name="patientId"
+    required
+    value="{{ patient.patientId }}"
+  />
+  <label for="mobileNumbers">Mobile numbers (comma separated)</label>
+  <textarea
+    rows="3"
+    id="mobileNumbers"
+    name="mobileNumbers"
+    placeholder="9899098909,8734560987"
+  >{{ patient.mobileNumbers | join(',') }}</textarea>
+
+  <fieldset>
+    <legend>Message should be sent every</legend>
+
+    {% for d in patientMessageDays %}
+
+    <div>
+      <input
+        type="checkbox"
+        id="{{ d.value }}"
+        name="messagesEvery"
+        value="{{d.value}}"
+        {{ 'checked' if d.value in patient.messagesEvery else '' }}
+      />
+      <label for="{{ d.value }}">{{ d.text }}</label>
+    </div>
+    {% endfor %}
+  </fieldset>
+
+  <label for="notes">Notes</label>
+  <textarea id="notes" name="notes" rows="5">{{ patient.notes }}</textarea>
+
+  <button class="btn btn-b" type="submit">Update patient</button>
+</form>
+
 {% endblock %}
