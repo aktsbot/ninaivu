@@ -27,6 +27,10 @@ const SenderSchema = new mongoose.Schema(
     notes: {
       type: String,
     },
+    status: {
+      type: String,
+      default: "active", // active, inactive
+    },
   },
   {
     timestamps: true,

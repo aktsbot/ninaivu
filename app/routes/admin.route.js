@@ -26,6 +26,7 @@ import {
   updateMessage,
   deleteMessage,
   updateSender,
+  deleteSender,
 } from "../controllers/admin.controller.js";
 
 import {
@@ -161,4 +162,6 @@ router.post(
   }),
   updateSender,
 );
+router.get("/senders/:uuid/delete", loadUserSession, requireUser, deleteSender);
+
 export default router;

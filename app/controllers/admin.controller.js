@@ -17,7 +17,9 @@ export const getAdminSendersHomePage = async (req, res) => {
     const limit = 20;
     const skip = page * limit - limit;
 
-    const query = {};
+    const query = {
+      status: ["active", "inactive"],
+    };
     const paginationUrls = {
       prev: `${req.baseUrl + req.path}?`,
       next: `${req.baseUrl + req.path}?`,
@@ -34,7 +36,7 @@ export const getAdminSendersHomePage = async (req, res) => {
     }
 
     const promises = [
-      Sender.countDocuments({}),
+      Sender.countDocuments({ status: ["active", "inactive"] }),
       Sender.countDocuments(query),
       Sender.find(
         query,
@@ -122,7 +124,9 @@ export const getAdminMessagesHomePage = async (req, res, next) => {
     const limit = 20;
     const skip = page * limit - limit;
 
-    const query = {};
+    const query = {
+      status: ["active", "inactive"],
+    };
     const paginationUrls = {
       prev: `${req.baseUrl + req.path}?`,
       next: `${req.baseUrl + req.path}?`,
@@ -136,7 +140,7 @@ export const getAdminMessagesHomePage = async (req, res, next) => {
     }
 
     const promises = [
-      Message.countDocuments({}),
+      Message.countDocuments({ status: ["active", "inactive"] }),
       Message.countDocuments(query),
       Message.find(query, "uuid content status createdAt updatedAt", {
         skip,
@@ -195,7 +199,9 @@ export const getAdminPatientsHomePage = async (req, res, next) => {
     const limit = 20;
     const skip = page * limit - limit;
 
-    const query = {};
+    const query = {
+      status: ["active", "inactive"],
+    };
     const paginationUrls = {
       prev: `${req.baseUrl + req.path}?`,
       next: `${req.baseUrl + req.path}?`,
@@ -215,7 +221,7 @@ export const getAdminPatientsHomePage = async (req, res, next) => {
     }
 
     const promises = [
-      Patient.countDocuments({}),
+      Patient.countDocuments({ status: ["active", "inactive"] }),
       Patient.countDocuments(query),
       Patient.find(
         query,
@@ -392,9 +398,16 @@ export const updateMessage = async (req, res, next) => {
 
 export const deleteMessage = async (req, res, next) => {
   try {
-    await Message.deleteOne({
-      uuid: req.params.uuid,
-    });
+    await Message.updateOne(
+      {
+        uuid: req.params.uuid,
+      },
+      {
+        $set: {
+          status: "zz-deleted",
+        },
+      },
+    );
 
     req.flash("success", [`Message has been deleted successfully.`]);
 
@@ -440,6 +453,29 @@ export const updateSender = async (req, res, next) => {
 
     req.flash("success", [
       `Sender ${senderInfo.user.fullName} (${senderInfo.mobileNumber}) has been updated successfully.`,
+    ]);
+
+    res.redirect("/admin/senders");
+    return;
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteSender = async (req, res, next) => {
+  try {
+    const senderInfo = await Sender.findOne({
+      uuid: req.params.uuid,
+    }).populate("user", "uuid status email fullName");
+
+    senderInfo.status = "zz-deleted";
+    senderInfo.user.status = "zz-deleted";
+
+    await senderInfo.save();
+    await senderInfo.user.save();
+
+    req.flash("success", [
+      `Sender ${senderInfo.name} has been deleted successfully.`,
     ]);
 
     res.redirect("/admin/senders");
