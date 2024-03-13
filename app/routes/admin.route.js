@@ -129,6 +129,7 @@ router.post(
   validatePageSubmission({
     schema: updateMessageSchema,
     routeMeta: routeMeta["adminMessagesEdit"],
+    goBackOnError: true,
   }),
   updateMessage,
 );

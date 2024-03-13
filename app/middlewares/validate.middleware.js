@@ -24,7 +24,7 @@ export const validate = (schema, isJSON) => (req, res, next) => {
 // this middleware is called when a page submission happens,
 // for example a POST request from user signup page.
 export const validatePageSubmission =
-  ({ schema, routeMeta }) =>
+  ({ schema, routeMeta, goBackOnError }) =>
   (req, res, next) => {
     /*
      * routeMeta => { template, meta: { title } }
@@ -38,6 +38,16 @@ export const validatePageSubmission =
 
     if (error) {
       req.flash("error", [error]);
+
+      if (goBackOnError) {
+        const backURL = req.header("referer");
+
+        if (backURL) {
+          res.redirect(backURL);
+          return;
+        }
+      }
+
       return res.render(routeMeta.template, {
         title: routeMeta.meta.title,
         flashes: req.flash(),
