@@ -23,6 +23,7 @@ import {
   createPatient,
   createMessage,
   updateMessage,
+  deleteMessage,
 } from "../controllers/admin.controller.js";
 
 import {
@@ -130,6 +131,12 @@ router.post(
     routeMeta: routeMeta["adminMessagesEdit"],
   }),
   updateMessage,
+);
+router.get(
+  "/messages/:uuid/delete",
+  loadUserSession,
+  requireUser,
+  deleteMessage,
 );
 
 export default router;

@@ -372,3 +372,18 @@ export const updateMessage = async (req, res, next) => {
     next(error);
   }
 };
+
+export const deleteMessage = async (req, res, next) => {
+  try {
+    await Message.deleteOne({
+      uuid: req.params.uuid,
+    });
+
+    req.flash("success", [`Message has been deleted successfully.`]);
+
+    res.redirect("/admin/messages");
+    return;
+  } catch (error) {
+    next(error);
+  }
+};
