@@ -522,3 +522,24 @@ export const updatePatient = async (req, res, next) => {
     next(error);
   }
 };
+
+export const deletePatient = async (req, res, next) => {
+  try {
+    const patient = await Patient.findOne({
+      uuid: req.params.uuid,
+    });
+
+    patient.status = "zz-deleted";
+
+    await patient.save();
+
+    req.flash("success", [
+      `Patient ${patient.name} has been deleted successfully.`,
+    ]);
+
+    res.redirect("/admin/patients");
+    return;
+  } catch (error) {
+    next(error);
+  }
+};

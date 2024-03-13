@@ -29,6 +29,7 @@ import {
   updateSender,
   deleteSender,
   updatePatient,
+  deletePatient,
 } from "../controllers/admin.controller.js";
 
 import {
@@ -182,6 +183,12 @@ router.post(
     goBackOnError: true,
   }),
   updatePatient,
+);
+router.get(
+  "/patients/:uuid/delete",
+  loadUserSession,
+  requireUser,
+  deletePatient,
 );
 
 export default router;
