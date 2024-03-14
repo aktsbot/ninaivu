@@ -71,7 +71,8 @@
   white-space: pre-line;
 }
 
-input[type="checkbox"] {
+input[type="checkbox"],
+input[type="radio"] {
   display: inline-block;
   width: 15px;
   height: 15px;
@@ -92,4 +93,22 @@ input[type="checkbox"] {
   padding-right: 5px;
   font-style: italic;
   color: #333;
+}
+
+.overflow-x-scroll {
+  overflow-x: scroll;
+}
+
+.d-none {
+  display: none;
+}
+
+.success-message-indicator {
+  color: #2a4;
+  font-weight: bold;
+}
+
+.failed-message-indicator {
+  color: #b22;
+  font-weight: bold;
 }

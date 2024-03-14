@@ -4,7 +4,7 @@
 {% block content %}
 <div>
   <h3>Message</h3>
-  <div>
+  <div class="overflow-x-scroll">
     <pre>{{ message.content }}</pre>
   </div>
 
@@ -14,25 +14,50 @@
   <a
     href="sms:{{ patient.mobileNumbers | join(',') }}?body={{ message.content | urlencode }}"
     class="btn btn-b"
+    id="send-sms-btn"
     >Send SMS</a
   >
 </div>
 
-<div class="py-100px"></div>
-
-<form action="/sender" method="GET">
+<!-- this is hidden by default -->
+<form action="/sender" method="GET" class="d-none" id="get-new-message-form">
   <div>
     <input
-      type="checkbox"
-      id="confirmSent"
+      type="radio"
+      id="confirmSentYes"
       name="confirmSent"
       value="yes"
       required
     />
-    <label for="confirmSent">I have sent this message</label>
+    <label for="confirmSentYes" class="success-message-indicator">
+      I have sent this message
+    </label>
+  </div>
+  <div>
+    <input
+      type="radio"
+      id="confirmSentNo"
+      name="confirmSent"
+      value="no"
+    />
+    <label for="confirmSentNo" class="failed-message-indicator">I could not send this message</label>
   </div>
 
   <button type="submit" class="btn btn-a btn-sm">Get new message</button>
 </form>
 
 {% endblock %}
+
+<!-- scripts -->
+{% block extrascript %}
+<script>
+  let btn = document.querySelector('#send-sms-btn');
+  let form = document.querySelector('#get-new-message-form');
+
+  btn.addEventListener('click', () => {
+    form.classList.remove('d-none')
+    btn.classList.add('d-none')
+  })
+</script>
+{% endblock %}
+
