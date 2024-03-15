@@ -5,14 +5,14 @@
 <div>
   <h3>Message</h3>
   <div class="overflow-x-scroll">
-    <pre>{{ message.content }}</pre>
+    <pre>{{ messageText }}</pre>
   </div>
 
   <h3>Contact ({{ patient.patientId }})</h3>
-  <p>{{ patient.mobileNumbers | join(', ') }}</p>
+  <p>{{ patient.mobileNumbers }}</p>
 
   <a
-    href="sms:{{ patient.mobileNumbers | join(',') }}?body={{ message.content | urlencode }}"
+    href="sms:{{ patient.mobileNumbers }}?body={{ message.content | urlencode }}"
     class="btn btn-b"
     id="send-sms-btn"
     >Send SMS</a

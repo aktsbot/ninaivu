@@ -2,37 +2,55 @@ import logger from "../logger.js";
 
 import { routeMeta } from "../routes/meta.js";
 
-import Patient from "../models/patient.model.js";
-import Message from "../models/message.model.js";
+import Queue from "../models/queue.model.js";
 
-export const getSendersHomePage = async (_req, res) => {
-  // TODO: this is a stub till we figure out a flow
+export const getSendersHomePage = async (req, res, next) => {
   try {
     const meta = routeMeta["sendersHome"];
 
-    const [pcount, mcount] = await Promise.all([
-      Patient.countDocuments({ status: "active" }),
-      Message.countDocuments({ status: "active" }),
-    ]);
+    // TODO: if the sender has something in the queue that
+    // was assigned to them. give them that instead of getting
+    // a new one for them.
 
-    const pIndex = Math.floor(Math.random() * pcount);
-    const mIndex = Math.floor(Math.random() * mcount);
-    const patients = await Patient.find(
+    // get one item in the queue and assign it to
+    // this sender
+    const queueItem = await Queue.findOne(
+      {
+        status: ["00-created", "10-try-another-sender"],
+      },
       {},
-      { patientId: 1, mobileNumbers: 1 },
-      { skip: pIndex, limit: 1 },
-    );
-    const messages = await Message.find({}, {}, { skip: mIndex, limit: 1 });
+      { sort: { status: 1 } },
+    ).populate("patient");
 
-    logger.debug("patients ");
-    logger.debug(patients);
-    logger.debug("messages ");
-    logger.debug(messages);
+    logger.debug("queue item");
+    logger.debug(queueItem);
+
+    let patient = {
+      patientId: null,
+      mobileNumbers: "",
+    };
+    let messageText = "";
+
+    if (queueItem) {
+      queueItem.sender = res.locals.user._id;
+      queueItem.addLog(`Sent to sender: ${res.locals.user.fullName}`);
+      queueItem.status = "01-sent-to-sender";
+      await queueItem.save();
+
+      patient.patientId = queueItem.patient.patientId;
+      patient.mobileNumbers = queueItem.mobileNumbers;
+      messageText = queueItem.messageText;
+    }
+
+    logger.debug("patient --");
+    logger.debug(queueItem.patient);
+    logger.debug("messageText --");
+    logger.debug(messageText);
 
     return res.render(meta.template, {
       ...meta.meta,
-      patient: patients[0],
-      message: messages[0],
+      patient,
+      messageText,
     });
   } catch (error) {
     next(error);
