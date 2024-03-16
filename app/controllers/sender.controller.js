@@ -8,19 +8,27 @@ export const getSendersHomePage = async (req, res, next) => {
   try {
     const meta = routeMeta["sendersHome"];
 
-    // TODO: if the sender has something in the queue that
+    // if the sender has something in the queue that
     // was assigned to them. give them that instead of getting
     // a new one for them.
+    let queueItem = null;
 
-    // get one item in the queue and assign it to
-    // this sender
-    const queueItem = await Queue.findOne(
-      {
-        status: ["00-created", "10-try-another-sender"],
-      },
-      {},
-      { sort: { status: 1 } },
-    ).populate("patient");
+    queueItem = await Queue.findOne({
+      status: "01-sent-to-sender",
+      sender: res.locals.user._id,
+    }).populate("patient");
+
+    if (!queueItem) {
+      // get one item in the queue and assign it to
+      // this sender
+      queueItem = await Queue.findOne(
+        {
+          status: ["00-created", "10-try-another-sender"],
+        },
+        {},
+        { sort: { status: 1 } },
+      ).populate("patient");
+    }
 
     logger.debug("queue item");
     logger.debug(queueItem);
