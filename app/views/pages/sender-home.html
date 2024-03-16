@@ -12,7 +12,7 @@
   <p>{{ patient.mobileNumbers }}</p>
 
   <a
-    href="sms:{{ patient.mobileNumbers }}?body={{ message.content | urlencode }}"
+    href="sms:{{ patient.mobileNumbers }}?body={{ messageText | urlencode }}"
     class="btn btn-b"
     id="send-sms-btn"
     >Send SMS</a
