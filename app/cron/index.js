@@ -43,8 +43,8 @@ async function queuer() {
 }
 
 export const startCrons = () => {
-  cron.schedule("* * * * *", () => {
-    logger.info("running cron task every minute: queuer");
+  cron.schedule("0 * * * *", () => {
+    logger.info("running cron task every hour: queuer");
     queuer();
   });
 };
