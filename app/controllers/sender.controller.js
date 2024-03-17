@@ -84,13 +84,14 @@ export const actionMessage = async (req, res, next) => {
       return;
     }
 
-    queueItem.status = "03-sent-to-patient";
-
     if (body.confirmSent === "no") {
       queueItem.status = "10-try-another-sender";
       queueItem.sender = null;
       queueItem.addLog(`${res.locals.user.fullName} could not send.`);
       // queueItem.markModified("status");
+    } else {
+      queueItem.status = "03-sent-to-patient";
+      queueItem.addLog(`${res.locals.user.fullName} successfully sent.`);
     }
 
     logger.debug("queue item");
