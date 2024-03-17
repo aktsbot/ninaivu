@@ -2,6 +2,15 @@
 
 <!-- sender home page -->
 {% block content %}
+
+{% if not patient or not messageText %}
+<div>
+  <h3>No messages available to send</h3>
+  <p>Please try again later!</p>
+
+  <a href="javascript:void(0);" onclick="location.reload()" class="btn btn-a btn-sm">Try again</a>
+</div>
+{% else %}
 <div>
   <h3>Message</h3>
   <div class="overflow-x-scroll">
@@ -47,6 +56,7 @@
 
   <button type="submit" class="btn btn-a btn-sm">Get new message</button>
 </form>
+{% endif %}
 
 {% endblock %}
 
@@ -56,6 +66,9 @@
   let btn = document.querySelector('#send-sms-btn');
   let form = document.querySelector('#get-new-message-form');
 
+  if (!btn || !form) {
+    return;
+  }
   btn.addEventListener('click', () => {
     form.classList.remove('d-none')
     btn.classList.add('d-none')
