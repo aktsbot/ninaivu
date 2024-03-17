@@ -19,7 +19,7 @@ export const getSendersHomePage = async (req, res, next) => {
     }).populate("patient");
 
     if (!queueItem) {
-      // get one item in the queue and assign it to
+      // get new one item in the queue and assign it to
       // this sender
       queueItem = await Queue.findOne(
         {
@@ -38,6 +38,7 @@ export const getSendersHomePage = async (req, res, next) => {
       mobileNumbers: "",
     };
     let messageText = "";
+    let queueItemId = "";
 
     if (queueItem) {
       queueItem.sender = res.locals.user._id;
@@ -48,6 +49,7 @@ export const getSendersHomePage = async (req, res, next) => {
       patient.patientId = queueItem.patient.patientId;
       patient.mobileNumbers = queueItem.mobileNumbers;
       messageText = queueItem.messageText;
+      queueItemId = queueItem.uuid;
     }
 
     logger.debug("patient --");
@@ -59,6 +61,7 @@ export const getSendersHomePage = async (req, res, next) => {
       ...meta.meta,
       patient,
       messageText,
+      queueItemId,
     });
   } catch (error) {
     next(error);
