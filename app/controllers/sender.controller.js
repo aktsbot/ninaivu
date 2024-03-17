@@ -38,6 +38,7 @@ export const getSendersHomePage = async (req, res, next) => {
       mobileNumbers: "",
     };
     let messageText = "";
+    let queueItemId = "";
 
     if (queueItem) {
       queueItem.sender = res.locals.user._id;
@@ -48,6 +49,7 @@ export const getSendersHomePage = async (req, res, next) => {
       patient.patientId = queueItem.patient.patientId;
       patient.mobileNumbers = queueItem.mobileNumbers;
       messageText = queueItem.messageText;
+      queueItemId = queueItem.uuid;
     }
 
     logger.debug("patient --");
@@ -59,7 +61,19 @@ export const getSendersHomePage = async (req, res, next) => {
       ...meta.meta,
       patient,
       messageText,
+      queueItemId,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// submissions
+export const actionMessage = (req, res, next) => {
+  try {
+    req.flash("success", [`Nice! Fetching another message.`]);
+    res.status(200);
+    return res.redirect("/sender");
   } catch (error) {
     next(error);
   }

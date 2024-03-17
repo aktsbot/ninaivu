@@ -29,7 +29,7 @@
 </div>
 
 <!-- this is hidden by default -->
-<form action="/sender" method="GET" class="d-none" id="get-new-message-form">
+<form action="/sender/action-message" method="POST" class="d-none" id="get-new-message-form">
   <div>
     <input
       type="radio"
@@ -63,16 +63,20 @@
 <!-- scripts -->
 {% block extrascript %}
 <script>
-  let btn = document.querySelector('#send-sms-btn');
-  let form = document.querySelector('#get-new-message-form');
+  function main() {
+    let btn = document.querySelector('#send-sms-btn');
+    let form = document.querySelector('#get-new-message-form');
 
-  if (!btn || !form) {
-    return;
+    if (!btn || !form) {
+      return;
+    }
+    btn.addEventListener('click', () => {
+      form.classList.remove('d-none')
+      btn.classList.add('d-none')
+    })
   }
-  btn.addEventListener('click', () => {
-    form.classList.remove('d-none')
-    btn.classList.add('d-none')
-  })
+
+  main();
 </script>
 {% endblock %}
 
