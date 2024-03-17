@@ -53,7 +53,7 @@ export const getSendersHomePage = async (req, res, next) => {
     }
 
     logger.debug("patient --");
-    logger.debug(queueItem.patient);
+    logger.debug(patient);
     logger.debug("messageText --");
     logger.debug(messageText);
 
@@ -69,10 +69,35 @@ export const getSendersHomePage = async (req, res, next) => {
 };
 
 // submissions
-export const actionMessage = (req, res, next) => {
+export const actionMessage = async (req, res, next) => {
   try {
+    const { body } = req.xop;
+
+    const queueItem = await Queue.findOne({
+      uuid: body.queueItemId,
+      sender: res.locals.user._id,
+    });
+
+    if (!queueItem) {
+      req.flash("error", [`Sorry! Can't find that message to action anymore.`]);
+      res.redirect("/sender");
+      return;
+    }
+
+    queueItem.status = "03-sent-to-patient";
+
+    if (body.confirmSent === "no") {
+      queueItem.status = "10-try-another-sender";
+      queueItem.sender = null;
+      queueItem.addLog(`${res.locals.user.fullName} could not send.`);
+      // queueItem.markModified("status");
+    }
+
+    logger.debug("queue item");
+    logger.debug(JSON.stringify(queueItem));
+
+    await queueItem.save();
     req.flash("success", [`Nice! Fetching another message.`]);
-    res.status(200);
     return res.redirect("/sender");
   } catch (error) {
     next(error);

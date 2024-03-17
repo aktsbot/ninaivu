@@ -27,7 +27,7 @@ const QueueSchema = new mongoose.Schema(
     },
     sender: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Sender",
+      ref: "User", // sender is also a user
     },
     logs: [
       {
