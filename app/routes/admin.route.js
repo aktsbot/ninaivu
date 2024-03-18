@@ -10,6 +10,7 @@ import { validatePageSubmission } from "../middlewares/validate.middleware.js";
 import { routeMeta } from "./meta.js";
 
 import {
+  getAdminHomePage,
   getAdminSendersHomePage,
   getAdminSendersNewPage,
   getAdminMessagesHomePage,
@@ -44,6 +45,16 @@ import {
 
 const router = Router();
 
+router.get(
+  "/",
+  loadUserSession,
+  requireUser,
+  validatePageSubmission({
+    schema: searchSchema,
+    routeMeta: routeMeta["adminHome"],
+  }),
+  getAdminHomePage,
+);
 router.get(
   "/senders",
   loadUserSession,

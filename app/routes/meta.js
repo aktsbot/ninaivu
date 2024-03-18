@@ -97,4 +97,10 @@ export const routeMeta = {
       title: "Send message",
     },
   },
+  adminHome: {
+    template: "pages/admin-home.html",
+    meta: {
+      title: "Reports",
+    },
+  },
 };

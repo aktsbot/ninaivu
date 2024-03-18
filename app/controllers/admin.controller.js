@@ -9,7 +9,18 @@ import Patient from "../models/patient.model.js";
 import Message from "../models/message.model.js";
 
 // pages
-export const getAdminSendersHomePage = async (req, res) => {
+export const getAdminHomePage = async (req, res, next) => {
+  try {
+    const meta = routeMeta["adminHome"];
+    return res.render(meta.template, {
+      ...meta.meta,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getAdminSendersHomePage = async (req, res, next) => {
   try {
     const meta = routeMeta["adminSendersHome"];
 
