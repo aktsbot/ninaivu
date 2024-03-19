@@ -55,7 +55,10 @@
         <span class="fix-datetime">{{ r.forDate }}</span>
       </td>
 
-      <td>{{ r.patient.name }}</td>
+      <td>
+        {{ r.patient.patientId }} <br />
+        {{ r.patient.name }}
+      </td>
 
       <td class="ws-pre">{{ r.messageText }}</td>
 
