@@ -59,9 +59,23 @@
 
       <td class="ws-pre">{{ r.messageText }}</td>
 
-      <td>{% if r.sender %} {{ r.sender.name }} {% endif %}</td>
+      <td>{% if r.sender %} {{ r.sender.fullName }} {% endif %}</td>
 
-      <td>{{ r.status }}</td>
+      <td>
+        <span class="status--{{ r.status }}">
+          {% if r.status == '00-created' %}
+          <i> Added to queue </i>
+          {% elif r.status == '01-sent-to-sender' %}
+          <i>Sender assigned </i>
+          {% elif r.status == '03-sent-to-patient' %}
+          <i> Sent to patient </i>
+          {% elif r.status == '10-try-another-sender' %}
+          <i> Need another sender </i>
+          {% else %}
+          <i> {{ r.status }} </i>
+          {% endif%}
+        </span>
+      </td>
     </tr>
     {% endfor %}
   </tbody>

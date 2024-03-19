@@ -112,3 +112,23 @@ input[type="radio"] {
   color: #b22;
   font-weight: bold;
 }
+
+.status--00-created {
+  color: #444;
+  text-decoration: underline;
+}
+
+.status--01-sent-to-sender {
+  color: darkgreen;
+  text-decoration: underline;
+}
+
+.status--03-sent-to-patient {
+  color: #2a4;
+  font-weight: bold;
+}
+
+.status--10-try-another-sender {
+  color: #b22;
+  font-weight: bold;
+}

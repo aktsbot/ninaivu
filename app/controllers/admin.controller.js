@@ -38,7 +38,7 @@ export const getAdminHomePage = async (req, res, next) => {
     const promises = [
       Queue.countDocuments({}),
       Queue.countDocuments(query),
-      Queue.find(query, {}, { skip, limit })
+      Queue.find(query, {}, { skip, limit, sort: { forDate: -1 } })
         .populate("patient")
         .populate("message")
         .populate("sender"),
@@ -47,7 +47,7 @@ export const getAdminHomePage = async (req, res, next) => {
     const [allCount, totalCount, reports] = await Promise.all(promises);
 
     logger.debug("reports");
-    logger.debug(reports);
+    logger.debug(JSON.stringify(reports));
 
     const totalPages = Math.ceil(totalCount / limit);
 
