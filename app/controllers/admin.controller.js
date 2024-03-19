@@ -7,13 +7,75 @@ import User from "../models/user.model.js";
 import Sender from "../models/sender.model.js";
 import Patient from "../models/patient.model.js";
 import Message from "../models/message.model.js";
+import Queue from "../models/queue.model.js";
 
 // pages
 export const getAdminHomePage = async (req, res, next) => {
   try {
     const meta = routeMeta["adminHome"];
+    const page = req.xop.query.page || 1;
+    const limit = 20;
+    const skip = page * limit - limit;
+
+    const query = {};
+
+    const paginationUrls = {
+      prev: `${req.baseUrl + req.path}?`,
+      next: `${req.baseUrl + req.path}?`,
+    };
+
+    if (req.xop.query.search) {
+      paginationUrls.prev += `&search=${req.xop.query.search}`;
+      paginationUrls.next += `&search=${req.xop.query.search}`;
+
+      // TODO: search for patient id or message text
+      // query["$or"] = [
+      //   { name: { $regex: req.xop.query.search, $options: "i" } },
+      //   { mobileNumber: { $regex: req.xop.query.search, $options: "i" } },
+      // ];
+    }
+
+    const promises = [
+      Queue.countDocuments({}),
+      Queue.countDocuments(query),
+      Queue.find(query, {}, { skip, limit })
+        .populate("patient")
+        .populate("message")
+        .populate("sender"),
+    ];
+
+    const [allCount, totalCount, reports] = await Promise.all(promises);
+
+    logger.debug("reports");
+    logger.debug(reports);
+
+    const totalPages = Math.ceil(totalCount / limit);
+
+    if (page != 1) {
+      paginationUrls.prev += `&page=${page - 1}`;
+    }
+
+    if (totalPages > page) {
+      paginationUrls.next += `&page=${page + 1}`;
+    }
+
+    logger.debug(`totalPages ${totalPages}`);
+    logger.debug(`page ${page}`);
+
     return res.render(meta.template, {
       ...meta.meta,
+      reports,
+      allCount,
+      totalCount,
+      pagination: {
+        page,
+        limit,
+        skip,
+        totalCount,
+        totalPages,
+        urls: paginationUrls,
+      },
+      query: req.xop.query,
     });
   } catch (error) {
     next(error);

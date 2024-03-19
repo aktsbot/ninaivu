@@ -3,5 +3,68 @@
 <!-- reports -->
 {% block content %}
 <h1>Reports</h1>
+<p>Daily reports for schedules message runs.</p>
+
+<div class="mt-1">
+  <form method="GET">
+    <input
+      type="text"
+      id="search"
+      name="search"
+      value="{{ query.search }}"
+      placeholder="search by patient id or message text"
+      aria-label="search by patient id or message text"
+    />
+  </form>
+</div>
+
+<div class="text-center">
+  <div>
+    {% if pagination.page != 1 %}
+    <a href="{{ pagination.urls.prev }}">&lt;Prev</a>
+    {% endif %}
+    <span>Page {{ pagination.page }} of {{ pagination.totalPages }}</span>
+    {% if pagination.page < totalPages %}
+    <a href="{{ pagination.urls.next }}">Next&gt;</a>
+    {% endif %}
+  </div>
+
+  <div>
+    <small>{{ totalCount }} result(s) found</small>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Date</th>
+      <th>Patient</th>
+      <th>Message</th>
+      <th>Sender</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for r in reports %}
+    <tr>
+      <td>{{ loop.index }}</td>
+
+      <td>
+        <span class="fix-datetime">{{ r.forDate }}</span>
+      </td>
+
+      <td>{{ r.patient.name }}</td>
+
+      <td class="ws-pre">{{ r.messageText }}</td>
+
+      <td>{% if r.sender %} {{ r.sender.name }} {% endif %}</td>
+
+      <td>{{ r.status }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 {% endblock %}
