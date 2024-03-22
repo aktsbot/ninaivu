@@ -1,12 +1,12 @@
 {%extends "partials/layout.html"%} 
 
 {% block content %}
-  <h1>Home is where the heart is</h1>
+  <h1>Hola <span role="img" aria-label="welcome to the platform">👋</span></h1>
 
   {% if user %}
-    <p>You are logged in as {{ user.fullName }}</p>
+    <p>You are logged in as {{ user.fullName }}.</p>
   {% else %}
-    <p>You are not logged in :(</p>
+    <p>Please <a href="/auth/login">login</a> to continue.</p>
   {%endif%}
 
 {% endblock %}
