@@ -28,11 +28,23 @@ export const getAdminHomePage = async (req, res, next) => {
       paginationUrls.prev += `&search=${req.xop.query.search}`;
       paginationUrls.next += `&search=${req.xop.query.search}`;
 
-      // TODO: search for patient id or message text
-      // query["$or"] = [
-      //   { name: { $regex: req.xop.query.search, $options: "i" } },
-      //   { mobileNumber: { $regex: req.xop.query.search, $options: "i" } },
-      // ];
+      // search for patient id or message text
+      const patients = await Patient.find(
+        {
+          patientId: { $regex: req.xop.query.search, $options: "i" },
+        },
+        "_id uuid",
+      );
+
+      query["$or"] = [
+        { messageText: { $regex: req.xop.query.search, $options: "i" } },
+      ];
+
+      if (patients.length) {
+        query["$or"].push({
+          patient: patients.map((p) => p._id),
+        });
+      }
     }
 
     const promises = [
