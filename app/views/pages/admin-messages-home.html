@@ -24,7 +24,7 @@
       <a href="{{ pagination.urls.prev }}">&lt;Prev</a>
       {% endif %}
       <span>Page {{ pagination.page }} of {{ pagination.totalPages  }}</span>
-      {% if pagination.page < totalPages %}
+      {% if pagination.page < pagination.totalPages %}
       <a href="{{ pagination.urls.next }}">Next&gt;</a>
       {% endif %}
     </div>
@@ -46,7 +46,7 @@
     <tbody>
       {% for m in messages %}
       <tr>
-        <td>{{ loop.index }}</td>
+        <td>{{ loop.index + pagination.skip }}</td>
 
         <td class="ws-pre">
           {{ m.content }}

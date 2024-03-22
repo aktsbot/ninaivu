@@ -46,8 +46,8 @@ export const getAdminHomePage = async (req, res, next) => {
 
     const [allCount, totalCount, reports] = await Promise.all(promises);
 
-    logger.debug("reports");
-    logger.debug(JSON.stringify(reports));
+    // logger.debug("reports");
+    // logger.debug(JSON.stringify(reports));
 
     const totalPages = Math.ceil(totalCount / limit);
 
