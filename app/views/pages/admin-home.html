@@ -6,16 +6,35 @@
 <p>Daily reports for schedules message runs.</p>
 
 <div class="mt-1">
-  <form method="GET">
-    <input
-      type="text"
-      id="search"
-      name="search"
-      value="{{ query.search }}"
-      placeholder="search by patient id or message text"
-      aria-label="search by patient id or message text"
-    />
-  </form>
+
+  <details>
+    <summary>Try filters?</summary>
+    <form method="GET">
+      <div class="row">
+        <div class="col c6">
+          <label>From
+            <input type="date" name="fromDate" />
+          </label>
+        </div>
+        <div class="col c6">
+          <label>To
+            <input type="date" name="toDate" />
+          </label>
+        </div>
+      </div>
+
+      <input
+        type="text"
+        id="search"
+        name="search"
+        value="{{ query.search }}"
+        placeholder="search by patient id or message text"
+        aria-label="search by patient id or message text"
+      />
+
+      <button type="submit" class="btn btn-sm">Filter</button>
+    </form>
+  </details>
 </div>
 
 <div class="text-center">
