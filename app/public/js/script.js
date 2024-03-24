@@ -1,4 +1,4 @@
-function formatDate(value) {
+function formatDate(value, noTime) {
   let date = new Date(value);
   const day = date.toLocaleString("default", { day: "2-digit" });
   const month = date.toLocaleString("default", { month: "short" });
@@ -7,13 +7,22 @@ function formatDate(value) {
     hour: "numeric",
     minute: "numeric",
   });
+
+  if (noTime) {
+    return day + "/" + month + "/" + year;
+  }
   return day + "/" + month + "/" + year + " " + time;
 }
 
 function fixDateTime() {
   document.querySelectorAll(".fix-datetime").forEach((e) => {
     let text = e.textContent;
-    const date = formatDate(text);
+    let date = formatDate(text);
+    if (e.dataset.fix) {
+      if (e.dataset.fix == "date") {
+        date = formatDate(text, true);
+      }
+    }
     e.textContent = date;
   });
 }
