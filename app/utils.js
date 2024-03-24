@@ -91,7 +91,7 @@ export const makeReportJSON = (data) => {
       last_updated_at: formattedDate({ date: d.updatedAt, addTime: true }),
       patient_id: d.patient.patientId,
       patient_name: d.patient.name,
-      patient_mobile_numbers: d.mobileNumbers,
+      patient_mobile_numbers: d.mobileNumbers.replace(/,/g, "\n"),
       message: d.messageText,
       sender: d.sender ? d.sender.fullName : "",
       status: d.status,
