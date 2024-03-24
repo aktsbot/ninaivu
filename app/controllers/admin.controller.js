@@ -1,7 +1,14 @@
 import logger from "../logger.js";
 
 import { routeMeta } from "../routes/meta.js";
-import { patientMessageDays, startOfDay, endOfDay } from "../utils.js";
+import {
+  patientMessageDays,
+  startOfDay,
+  endOfDay,
+  makeReportJSON,
+} from "../utils.js";
+
+import { json2csv } from "json-2-csv";
 
 import User from "../models/user.model.js";
 import Sender from "../models/sender.model.js";
@@ -648,6 +655,53 @@ export const deletePatient = async (req, res, next) => {
 
     res.redirect("/admin/patients");
     return;
+  } catch (error) {
+    next(error);
+  }
+};
+
+// pages
+export const getAdminCSVReport = async (req, res, next) => {
+  try {
+    const query = {};
+
+    if (req.xop.query.fromDate) {
+      // YYYY-MM-DD <-- format
+      query["forDate"] = {
+        $gte: startOfDay(req.xop.query.fromDate),
+      };
+    }
+    if (req.xop.query.toDate) {
+      if (query["forDate"]) {
+        query["forDate"] = {
+          ...query["forDate"],
+          $lte: endOfDay(req.xop.query.toDate),
+        };
+      } else {
+        query["forDate"] = {
+          $lte: endOfDay(req.xop.query.toDate),
+        };
+      }
+    }
+
+    const promises = [
+      Queue.find(query, {}, { sort: { forDate: -1 } })
+        .populate("patient")
+        .populate("message")
+        .populate("sender"),
+    ];
+
+    const [reports] = await Promise.all(promises);
+
+    const json = makeReportJSON(reports);
+    const csv = json2csv(json);
+
+    let fileName = `ninaivureport_${new Date().getTime()}`;
+    fileName += `_${req.xop.query.fromDate.replace(/-/g, "")}`;
+    fileName += `_${req.xop.query.toDate.replace(/-/g, "")}`;
+    fileName += ".csv";
+
+    return res.attachment(fileName).send(csv);
   } catch (error) {
     next(error);
   }

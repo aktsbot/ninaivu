@@ -31,6 +31,7 @@ import {
   deleteSender,
   updatePatient,
   deletePatient,
+  getAdminCSVReport,
 } from "../controllers/admin.controller.js";
 
 import {
@@ -200,6 +201,16 @@ router.get(
   loadUserSession,
   requireUser,
   deletePatient,
+);
+router.get(
+  "/csv",
+  loadUserSession,
+  requireUser,
+  validatePageSubmission({
+    schema: searchSchema,
+    goBackOnError: true,
+  }),
+  getAdminCSVReport,
 );
 
 export default router;

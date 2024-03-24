@@ -36,14 +36,68 @@ export const patientMessageDays = [
   },
 ];
 
-export const startOfDay = (_date) => {
-  const date = new Date(_date);
+export const startOfDay = (inputDate) => {
+  const date = new Date(inputDate);
   date.setUTCHours(0, 0, 0, 0);
   return date;
 };
 
-export const endOfDay = (_date) => {
-  const date = new Date(_date);
+export const endOfDay = (inputDate) => {
+  const date = new Date(inputDate);
   date.setUTCHours(23, 59, 59, 999);
   return date;
+};
+
+// https://stackoverflow.com/questions/3552461/how-do-i-format-a-date-in-javascript
+export const formattedDate = ({ date, addTime }) => {
+  const d = new Date(date);
+  var dateString =
+    ("0" + d.getDate()).slice(-2) +
+    "-" +
+    ("0" + (d.getMonth() + 1)).slice(-2) +
+    "-" +
+    d.getFullYear();
+
+  if (addTime) {
+    dateString +=
+      " " +
+      ("0" + d.getHours()).slice(-2) +
+      ":" +
+      ("0" + d.getMinutes()).slice(-2);
+  }
+
+  // 16-05-2015 09:50
+  return dateString;
+};
+
+export const makeReportJSON = (data) => {
+  const rows = [];
+  /*
+   * {
+   *    for_date: '',
+   *    last_updated_date: '',
+   *    patient_id: '',
+   *    patient_name: '',
+   *    patient_mobile_numbers: '',
+   *    message: '',
+   *    sender: '',
+   *    status: ''
+   * }
+   *
+   */
+  for (const d of data) {
+    const r = {
+      for_date: formattedDate({ date: d.forDate }),
+      last_updated_at: formattedDate({ date: d.updatedAt, addTime: true }),
+      patient_id: d.patient.patientId,
+      patient_name: d.patient.name,
+      patient_mobile_numbers: d.mobileNumbers,
+      message: d.messageText,
+      sender: d.sender ? d.sender.fullName : "",
+      status: d.status,
+    };
+    rows.push(r);
+  }
+
+  return rows;
 };

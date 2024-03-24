@@ -50,7 +50,7 @@
 .btn-c {
   background: #d33;
 }
-.btn-c.hover {
+.btn-c:hover {
   background: #c22; /* darken(@btn-c-bg, 5%) */
 }
 .btn-c:active,
