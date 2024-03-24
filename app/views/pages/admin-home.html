@@ -4,6 +4,7 @@
 {% block content %}
 <h1>Report ({{allCount}})</h1>
 <p>Daily reports for schedules message runs.</p>
+<p>Tip: You can export a csv of results if you filter with a "From" and "To" date.</p>
 
 <div class="mt-1">
 
@@ -36,6 +37,14 @@
       <a href="/admin">Clear filters</a>
     </form>
   </details>
+
+  {% if query.fromDate and query.toDate %}
+  <div>
+    <a href="/admin/csv?fromDate={{query.fromDate}}&toDate={{query.toDate}}&search={{query.search}}">
+    Export results as CSV
+    </a>
+  </div>
+  {% endif %}
 </div>
 
 <div class="text-center">
