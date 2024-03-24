@@ -21,6 +21,8 @@ export const searchSchema = joi
     query: joi.object().keys({
       search: joi.string().allow("").optional(),
       page: joi.number().optional().min(1),
+      fromDate: joi.string().allow("").optional(),
+      toDate: joi.string().allow("").optional(),
     }),
   })
   .unknown(true);

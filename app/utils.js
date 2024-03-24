@@ -35,3 +35,15 @@ export const patientMessageDays = [
     id: 7,
   },
 ];
+
+export const startOfDay = (_date) => {
+  const date = new Date(_date);
+  date.setUTCHours(0, 0, 0, 0);
+  return date;
+};
+
+export const endOfDay = (_date) => {
+  const date = new Date(_date);
+  date.setUTCHours(23, 59, 59, 999);
+  return date;
+};

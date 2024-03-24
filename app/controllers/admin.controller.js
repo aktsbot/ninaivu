@@ -1,7 +1,7 @@
 import logger from "../logger.js";
 
 import { routeMeta } from "../routes/meta.js";
-import { patientMessageDays } from "../utils.js";
+import { patientMessageDays, startOfDay, endOfDay } from "../utils.js";
 
 import User from "../models/user.model.js";
 import Sender from "../models/sender.model.js";
@@ -18,6 +18,7 @@ export const getAdminHomePage = async (req, res, next) => {
     const skip = page * limit - limit;
 
     const query = {};
+    let showFilters = false;
 
     const paginationUrls = {
       prev: `${req.baseUrl + req.path}?`,
@@ -25,6 +26,7 @@ export const getAdminHomePage = async (req, res, next) => {
     };
 
     if (req.xop.query.search) {
+      showFilters = true;
       paginationUrls.prev += `&search=${req.xop.query.search}`;
       paginationUrls.next += `&search=${req.xop.query.search}`;
 
@@ -44,6 +46,27 @@ export const getAdminHomePage = async (req, res, next) => {
         query["$or"].push({
           patient: patients.map((p) => p._id),
         });
+      }
+    }
+
+    if (req.xop.query.fromDate) {
+      showFilters = true;
+      // YYYY-MM-DD <-- format
+      query["forDate"] = {
+        $gte: startOfDay(req.xop.query.fromDate),
+      };
+    }
+    if (req.xop.query.toDate) {
+      showFilters = true;
+      if (query["forDate"]) {
+        query["forDate"] = {
+          ...query["forDate"],
+          $lte: endOfDay(req.xop.query.toDate),
+        };
+      } else {
+        query["forDate"] = {
+          $lte: endOfDay(req.xop.query.toDate),
+        };
       }
     }
 
@@ -88,6 +111,7 @@ export const getAdminHomePage = async (req, res, next) => {
         urls: paginationUrls,
       },
       query: req.xop.query,
+      showFilters,
     });
   } catch (error) {
     next(error);
