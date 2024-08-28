@@ -7,7 +7,10 @@
 
 <div class="original-data">
   <h3>Original message content</h3>
-  <p class="ws-pre">{{message.content}}</p>
+  <p class="ws-pre heavy">{{message.content}}</p>
+
+  <h3>Original message notes</h3>
+  <p class="ws-pre">{{message.notes}}</p>
 </div>
 
 <h2>Update message</h2>
@@ -19,9 +22,18 @@
     name="content"
     placeholder="This is the SMS that you'd be sending to patients"
     required
+    class="heavy"
   >
 {{ message.content }}</textarea
   >
+
+  <label for="notes">Optional notes</label>
+  <textarea
+    rows="3"
+    id="notes"
+    name="notes"
+    placeholder="Optional: Any help text to make sense of the above message. For example, if the message above is in Tamil, you can write the Eng/Tanglish meaning here."
+  >{{ message.notes }}</textarea>
 
   <button class="btn btn-b" type="submit">Update message</button>
 </form>

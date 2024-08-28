@@ -136,3 +136,8 @@ input[type="radio"] {
 .d-flex {
   display: flex;
 }
+
+.heavy {
+  font-size: x-large;
+  font-weight: bolder;
+}

@@ -258,7 +258,7 @@ export const getAdminMessagesHomePage = async (req, res, next) => {
     const promises = [
       Message.countDocuments({ status: ["active", "inactive"] }),
       Message.countDocuments(query),
-      Message.find(query, "uuid content status createdAt updatedAt", {
+      Message.find(query, "uuid content notes status createdAt updatedAt", {
         skip,
         limit,
       }),
@@ -386,7 +386,7 @@ export const getAdminMessagesEditPage = async (req, res, next) => {
     const meta = routeMeta["adminMessagesEdit"];
     const message = await Message.findOne(
       { uuid: req.params.uuid },
-      "uuid content status createdAt",
+      "uuid content notes status createdAt",
     );
     return res.render(meta.template, {
       ...meta.meta,

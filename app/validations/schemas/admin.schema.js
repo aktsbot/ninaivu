@@ -58,6 +58,7 @@ export const updateMessageSchema = joi
     }),
     body: joi.object().keys({
       content: joi.string().required(),
+      notes: joi.string().allow("").optional(),
     }),
   })
   .unknown(true);

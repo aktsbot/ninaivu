@@ -39,6 +39,7 @@
       <tr>
         <th>#</th>
         <th>Content</th>
+        <th>Notes</th>
         <th>Action</th>
       </tr>
     </thead>
@@ -49,7 +50,10 @@
         <td>{{ loop.index + pagination.skip }}</td>
 
         <td class="ws-pre">
-          {{ m.content }}
+          <span class="heavy">{{ m.content }}</span>
+        </td>
+        <td>
+          {{ m.notes }}
         </td>
         <td>
           <a href="{{currentPath}}/{{m.uuid}}/edit">Edit message</a> |
