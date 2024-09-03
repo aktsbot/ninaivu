@@ -141,3 +141,15 @@ input[type="radio"] {
   font-size: x-large;
   font-weight: bolder;
 }
+
+.pill-tag {
+  border: none;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin-right: 13px;
+  margin-left: -1px;
+  margin-bottom: 10px;
+  border-radius: 100px;
+}

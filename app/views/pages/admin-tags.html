@@ -5,5 +5,54 @@
 {% block content %}
 <h1>Tags</h1>
 
-<p>These can be assigned to messages and patients.</p>
+<p>
+  These can be assigned to messages and patients.
+
+  <a href="#add-more-tags">Add a new tag?</a>
+</p>
+
+<div>
+  <h2>Current tags</h2>
+  <button class="pill-tag" style="background-color: #000; color: #fff">
+    Alcohol
+  </button>
+  <button class="pill-tag">Depression</button>
+  <button class="pill-tag">Smoking</button>
+
+  <div id="add-more-tags">
+    <h2>Add a tag</h2>
+
+    <form method="POST" action="/admin/tags/new">
+      <label for="name">Name</label>
+      <input
+        type="text"
+        name="name"
+        id="name"
+        placeholder="Alcoholic"
+        required
+      />
+
+      <label for="backgroundColor">Background color</label>
+      <input
+        type="color"
+        name="backgroundColor"
+        id="backgroundColor"
+        value="#ff00ff"
+        required
+      />
+
+      <label for="textColor">Text color</label>
+      <input
+        type="color"
+        name="textColor"
+        id="textColor"
+        value="#ffffff"
+        required
+      />
+
+      <button class="btn btn-b" type="submit">Create tag</button>
+    </form>
+  </div>
+</div>
+
 {% endblock %}
