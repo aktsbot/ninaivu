@@ -21,6 +21,11 @@
       ><span role="img" aria-label="messages page">✉️</span> Messages</a
     >
     <a
+      href="/admin/tags"
+      class="{{ 'current' if '/admin/tags' in currentPath else '' }}"
+      ><span role="img" aria-label="tags page">🏷️</span> Tags</a
+    >
+    <a
       href="/admin/senders"
       class="{{ 'current' if '/admin/senders' in currentPath else '' }}"
       ><span role="img" aria-label="senders page">📱</span> Senders</a

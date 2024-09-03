@@ -20,6 +20,7 @@ import {
   getAdminMessagesEditPage,
   getAdminSenderEditPage,
   getAdminPatientsEditPage,
+  getAdminTagsPage,
 
   // submissions
   createSender,
@@ -124,6 +125,7 @@ router.get(
   requireUser,
   getAdminMessagesEditPage,
 );
+router.get("/tags", loadUserSession, requireUser, getAdminTagsPage);
 
 // api or page submissions
 router.post(

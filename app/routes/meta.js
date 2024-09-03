@@ -103,4 +103,11 @@ export const routeMeta = {
       title: "Reports",
     },
   },
+  // -- tags
+  adminTags: {
+    template: "pages/admin-tags.html",
+    meta: {
+      title: "Tags",
+    },
+  },
 };
