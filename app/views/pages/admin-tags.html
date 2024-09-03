@@ -12,7 +12,7 @@
 </p>
 
 <div>
-  <h2>Current tags</h2>
+  <h2>Current tags ({{ allTags | length }})</h2>
 
   {% if not allTags | length %}
   <p>No tags added yet.</p>
@@ -37,6 +37,7 @@
           placeholder="Alcoholic"
           required
           oninput="tagInputChange(this)"
+          autofocus
         />
 
         <label for="backgroundColor">Background color</label>
