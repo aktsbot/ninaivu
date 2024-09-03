@@ -13,11 +13,16 @@
 
 <div>
   <h2>Current tags</h2>
-  <button class="pill-tag" style="background-color: #000; color: #fff">
-    Alcohol
+
+  {% if not allTags | length %}
+  <p>No tags added yet.</p>
+  {% endif %}
+
+  {% for tag in allTags %}
+  <button class="pill-tag" style="background-color: {{ tag.backgroundColor }}; color: {{ tag.textColor }}">
+    {{ tag.name }}
   </button>
-  <button class="pill-tag">Depression</button>
-  <button class="pill-tag">Smoking</button>
+  {% endfor %}
 
   <div id="add-more-tags" class="d-flex flex-wrap">
     <div class="flex-col">

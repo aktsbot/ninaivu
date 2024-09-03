@@ -415,8 +415,10 @@ export const getAdminPatientsEditPage = async (req, res, next) => {
 export const getAdminTagsPage = async (req, res, next) => {
   try {
     const meta = routeMeta["adminTags"];
+    const allTags = await Tag.find({}, {}, { sort: { _id: -1 } });
     return res.render(meta.template, {
       ...meta.meta,
+      allTags,
     });
   } catch (error) {
     next(error);
