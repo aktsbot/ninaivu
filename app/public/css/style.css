@@ -137,6 +137,16 @@ input[type="radio"] {
   display: flex;
 }
 
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-col {
+  flex-basis: 50%;
+  box-sizing: border-box;
+  min-width: 500px;
+}
+
 .heavy {
   font-size: x-large;
   font-weight: bolder;
