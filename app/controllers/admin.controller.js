@@ -15,6 +15,7 @@ import Sender from "../models/sender.model.js";
 import Patient from "../models/patient.model.js";
 import Message from "../models/message.model.js";
 import Queue from "../models/queue.model.js";
+import Tag from "../models/tag.model.js";
 
 // pages
 export const getAdminHomePage = async (req, res, next) => {
@@ -671,6 +672,22 @@ export const deletePatient = async (req, res, next) => {
   }
 };
 
+export const createTag = async (req, res, next) => {
+  try {
+    const { body } = req.xop;
+    await new Tag({
+      ...body,
+      createdBy: res.locals.user._id,
+    }).save();
+
+    req.flash("success", [`Tag has been created successfully.`]);
+
+    res.redirect("/admin/tags");
+    return;
+  } catch (error) {
+    next(error);
+  }
+};
 // pages
 export const getAdminCSVReport = async (req, res, next) => {
   try {

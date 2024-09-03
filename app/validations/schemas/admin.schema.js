@@ -93,3 +93,14 @@ export const updatePatientSchema = joi
     }),
   })
   .unknown(true);
+
+export const createTagSchema = joi
+  .object()
+  .keys({
+    body: joi.object().keys({
+      name: joi.string().required(),
+      backgroundColor: joi.string().allow(""),
+      textColor: joi.string().allow(""),
+    }),
+  })
+  .unknown(true);

@@ -33,6 +33,7 @@ import {
   updatePatient,
   deletePatient,
   getAdminCSVReport,
+  createTag,
 } from "../controllers/admin.controller.js";
 
 import {
@@ -43,6 +44,7 @@ import {
   updateMessageSchema,
   updateSenderSchema,
   updatePatientSchema,
+  createTagSchema,
 } from "../validations/schemas/admin.schema.js";
 
 const router = Router();
@@ -213,6 +215,16 @@ router.get(
     goBackOnError: true,
   }),
   getAdminCSVReport,
+);
+router.post(
+  "/tags/new",
+  loadUserSession,
+  requireUser,
+  validatePageSubmission({
+    schema: createTagSchema,
+    goBackOnError: true,
+  }),
+  createTag,
 );
 
 export default router;
