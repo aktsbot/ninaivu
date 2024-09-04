@@ -12,10 +12,19 @@
   <p class="ws-pre heavy">{{message.content}}</p>
 
   <h4>Tag</h4>
+  {% if message.tag %}
   <button class="pill-tag" style="background-color: {{ message.tag.backgroundColor }}; color: {{ message.tag.textColor }}">{{ message.tag.name }}</button>
+  {% else %}
+  <p>No tag set</p>
+  {% endif %}
 
   <h4>Notes</h4>
+  {% if message.notes %}
   <p class="ws-pre">{{message.notes}}</p>
+  {% else %}
+  <p>No notes set</p>
+  {% endif %}
+
 </div>
 
 <h2>Update message</h2>

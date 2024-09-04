@@ -51,6 +51,9 @@
 
         <td class="ws-pre">
           <span class="heavy">{{ m.content }}</span>
+          {% if m.tag %}
+          <span class="pill-tag" style="background-color: {{ m.tag.backgroundColor }}; color: {{ m.tag.textColor }}">{{ m.tag.name }}</span>
+          {% endif %}
         </td>
         <td>
           {{ m.notes }}

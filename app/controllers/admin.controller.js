@@ -259,10 +259,10 @@ export const getAdminMessagesHomePage = async (req, res, next) => {
     const promises = [
       Message.countDocuments({ status: ["active", "inactive"] }),
       Message.countDocuments(query),
-      Message.find(query, "uuid content notes status createdAt updatedAt", {
+      Message.find(query, "uuid content notes tag status createdAt updatedAt", {
         skip,
         limit,
-      }),
+      }).populate('tag', 'name backgroundColor textColor'),
     ];
 
     const [allCount, totalCount, messages] = await Promise.all(promises);
