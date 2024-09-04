@@ -17,6 +17,24 @@
     class="heavy"
   ></textarea>
 
+
+ <fieldset>
+    <legend>Tag for this message</legend>
+
+    {% for tag in allTags %}
+    <div>
+      <input
+        type="radio"
+        id="{{ tag._id }}"
+        name="tag"
+        value="{{ tag._id }}"
+      />
+      <label for="{{ tag._id }}" class="pill-tag" style="background-color: {{ tag.backgroundColor }}; color: {{ tag.textColor }}">{{ tag.name }}</label>
+    </div>
+    {% endfor %}
+  </fieldset>
+
+
   <label for="notes">Optional notes</label>
   <textarea
     rows="3"

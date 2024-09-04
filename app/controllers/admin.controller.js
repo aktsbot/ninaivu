@@ -300,12 +300,19 @@ export const getAdminMessagesHomePage = async (req, res, next) => {
   }
 };
 
-export const getAdminMessagesNewPage = (_req, res) => {
-  const meta = routeMeta["adminMessagesNew"];
+export const getAdminMessagesNewPage = async (_req, res) => {
+  try {
+    const meta = routeMeta["adminMessagesNew"];
 
-  return res.render(meta.template, {
-    ...meta.meta,
-  });
+    const allTags = await Tag.find({}, {}, { sort: { _id: -1 } });
+
+    return res.render(meta.template, {
+      ...meta.meta,
+      allTags,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const getAdminPatientsHomePage = async (req, res, next) => {
@@ -500,6 +507,19 @@ export const createMessage = async (req, res, next) => {
 
   try {
     const { body } = req.xop;
+
+    // if a tag has been passed, make sure it exists
+    if (body.tag) {
+      const tagFound = await Tag.findById(body.tag);
+      if (!tagFound) {
+        req.flash("error", ["Selected tag not found"]);
+        return res.status(400).render(meta.template, {
+          ...meta.meta,
+          flashes: req.flash(),
+          body,
+        });
+      }
+    }
     await new Message({
       ...body,
       createdBy: res.locals.user._id,

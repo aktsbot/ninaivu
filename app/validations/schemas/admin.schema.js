@@ -46,6 +46,7 @@ export const createMessageSchema = joi
     body: joi.object().keys({
       content: joi.string().required(),
       notes: joi.string().allow("").optional(),
+      tag: joi.string().optional(),
     }),
   })
   .unknown(true);
