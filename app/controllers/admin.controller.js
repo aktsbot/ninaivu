@@ -392,13 +392,16 @@ export const getAdminPatientsHomePage = async (req, res, next) => {
 export const getAdminMessagesEditPage = async (req, res, next) => {
   try {
     const meta = routeMeta["adminMessagesEdit"];
+    const allTags = await Tag.find({}, {}, { sort: { _id: -1 } });
     const message = await Message.findOne(
       { uuid: req.params.uuid },
-      "uuid content notes status createdAt",
-    );
+      "uuid content notes tag status createdAt",
+    ).populate("tag", "name backgroundColor textColor");
+
     return res.render(meta.template, {
       ...meta.meta,
       message,
+      allTags,
     });
   } catch (error) {
     next(error);
@@ -539,7 +542,18 @@ export const updateMessage = async (req, res, next) => {
 
   try {
     const { body } = req.xop;
-
+    // if a tag has been passed, make sure it exists
+    if (body.tag) {
+      const tagFound = await Tag.findById(body.tag);
+      if (!tagFound) {
+        req.flash("error", ["Selected tag not found"]);
+        return res.status(400).render(meta.template, {
+          ...meta.meta,
+          flashes: req.flash(),
+          body,
+        });
+      }
+    }
     await Message.updateOne(
       {
         uuid: req.params.uuid,

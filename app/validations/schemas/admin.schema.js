@@ -36,6 +36,7 @@ export const createPatientSchema = joi
       mobileNumbers: joi.string().required(),
       notes: joi.string().allow(""),
       messagesEvery: joi.array().items(joi.string().required()).required(),
+      tag: joi.string().optional(),
     }),
   })
   .unknown(true);
@@ -60,6 +61,7 @@ export const updateMessageSchema = joi
     body: joi.object().keys({
       content: joi.string().required(),
       notes: joi.string().allow("").optional(),
+      tag: joi.string().optional(),
     }),
   })
   .unknown(true);
@@ -91,6 +93,7 @@ export const updatePatientSchema = joi
       mobileNumbers: joi.string().required(),
       notes: joi.string().allow(""),
       messagesEvery: joi.array().items(joi.string().required()).required(),
+      tag: joi.string().optional(),
     }),
   })
   .unknown(true);

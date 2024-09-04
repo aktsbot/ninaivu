@@ -6,10 +6,15 @@
 <h1>Edit message</h1>
 
 <div class="original-data">
-  <h3>Original message content</h3>
+  <h3>Original message</h3>
+  
+  <h4>Content</h4>
   <p class="ws-pre heavy">{{message.content}}</p>
 
-  <h3>Original message notes</h3>
+  <h4>Tag</h4>
+  <button class="pill-tag" style="background-color: {{ message.tag.backgroundColor }}; color: {{ message.tag.textColor }}">{{ message.tag.name }}</button>
+
+  <h4>Notes</h4>
   <p class="ws-pre">{{message.notes}}</p>
 </div>
 
@@ -27,6 +32,23 @@
 {{ message.content }}</textarea
   >
 
+  <fieldset>
+    <legend>Tag for this message</legend>
+
+    {% for tag in allTags %}
+    <div>
+      <input
+        type="radio"
+        id="{{ tag._id }}"
+        name="tag"
+        value="{{ tag._id }}"
+        {{ 'checked' if (message.tag and message.tag._id.toString() == tag._id.toString()) else '' }}
+      />
+      <label for="{{ tag._id }}" class="pill-tag" style="background-color: {{ tag.backgroundColor }}; color: {{ tag.textColor }}">{{ tag.name }}</label>
+    </div>
+    {% endfor %}
+  </fieldset>
+  
   <label for="notes">Optional notes</label>
   <textarea
     rows="3"
