@@ -15,6 +15,14 @@
 
   <p>Messages every: {{ patient.messagesEvery | join(', ') }}</p>
 
+  <p>Tag:
+  {% if patient.tag %}
+  <button class="pill-tag" style="background-color: {{ patient.tag.backgroundColor }}; color: {{ patient.tag.textColor }}">{{ patient.tag.name }}</button>
+  {% else %}
+  <span>No tag set</span>
+  {% endif %}
+  </p>
+
   <p class="ws-pre">Notes: {{ patient.notes }}</p>
 </div>
 
@@ -54,6 +62,23 @@
         {{ 'checked' if d.value in patient.messagesEvery else '' }}
       />
       <label for="{{ d.value }}">{{ d.text }}</label>
+    </div>
+    {% endfor %}
+  </fieldset>
+
+  <fieldset>
+    <legend>Tag for this patient</legend>
+
+    {% for tag in allTags %}
+    <div>
+      <input
+        type="radio"
+        id="{{ tag._id }}"
+        name="tag"
+        value="{{ tag._id }}"
+        {{ 'checked' if (patient.tag and patient.tag._id.toString() == tag._id.toString()) else '' }}
+      />
+      <label for="{{ tag._id }}" class="pill-tag" style="background-color: {{ tag.backgroundColor }}; color: {{ tag.textColor }}">{{ tag.name }}</label>
     </div>
     {% endfor %}
   </fieldset>

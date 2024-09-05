@@ -55,6 +55,10 @@
           {{ p.patientId }} <br />
           {{ p.name }} <br />
           {{ p.status }}
+          {% if p.tag %}
+          <br />
+          <span class="pill-tag" style="background-color: {{ p.tag.backgroundColor }}; color: {{ p.tag.textColor }}">{{ p.tag.name }}</span>
+          {% endif %}
         </td>
 
         <td>

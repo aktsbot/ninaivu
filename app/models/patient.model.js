@@ -33,6 +33,7 @@ const PatientSchema = new mongoose.Schema(
       },
     ],
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    tag: { type: mongoose.Schema.Types.ObjectId, ref: "Tag" },
     status: {
       type: String,
       default: "active", // active, inactive

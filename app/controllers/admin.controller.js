@@ -225,13 +225,19 @@ export const getAdminSenderEditPage = async (req, res, next) => {
   }
 };
 
-export const getAdminPatientsNewPage = (_req, res) => {
-  const meta = routeMeta["adminPatientsNew"];
+export const getAdminPatientsNewPage = async (_req, res) => {
+  try {
+    const meta = routeMeta["adminPatientsNew"];
+    const allTags = await Tag.find({}, {}, { sort: { _id: -1 } });
 
-  return res.render(meta.template, {
-    ...meta.meta,
-    patientMessageDays,
-  });
+    return res.render(meta.template, {
+      ...meta.meta,
+      patientMessageDays,
+      allTags,
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const getAdminMessagesHomePage = async (req, res, next) => {
@@ -262,7 +268,7 @@ export const getAdminMessagesHomePage = async (req, res, next) => {
       Message.find(query, "uuid content notes tag status createdAt updatedAt", {
         skip,
         limit,
-      }).populate('tag', 'name backgroundColor textColor'),
+      }).populate("tag", "name backgroundColor textColor"),
     ];
 
     const [allCount, totalCount, messages] = await Promise.all(promises);
@@ -349,9 +355,9 @@ export const getAdminPatientsHomePage = async (req, res, next) => {
       Patient.countDocuments(query),
       Patient.find(
         query,
-        "uuid name status mobileNumbers messagesEvery patientId notes createdAt updatedAt",
+        "uuid name status mobileNumbers messagesEvery tag patientId notes createdAt updatedAt",
         { skip, limit },
-      ),
+      ).populate('tag', 'backgroundColor textColor name'),
     ];
 
     const [allCount, totalCount, patients] = await Promise.all(promises);
@@ -411,11 +417,16 @@ export const getAdminMessagesEditPage = async (req, res, next) => {
 export const getAdminPatientsEditPage = async (req, res, next) => {
   try {
     const meta = routeMeta["adminPatientsEdit"];
-    const patient = await Patient.findOne({ uuid: req.params.uuid });
+    const allTags = await Tag.find({}, {}, { sort: { _id: -1 } });
+    const patient = await Patient.findOne({ uuid: req.params.uuid }).populate(
+      "tag",
+      "name backgroundColor textColor",
+    );
     return res.render(meta.template, {
       ...meta.meta,
       patient,
       patientMessageDays,
+      allTags,
     });
   } catch (error) {
     next(error);
@@ -488,6 +499,19 @@ export const createPatient = async (req, res, next) => {
 
   try {
     const { body } = req.xop;
+    // if a tag has been passed, make sure it exists
+    if (body.tag) {
+      const tagFound = await Tag.findById(body.tag);
+      if (!tagFound) {
+        req.flash("error", ["Selected tag not found"]);
+        return res.status(400).render(meta.template, {
+          ...meta.meta,
+          flashes: req.flash(),
+          body,
+        });
+      }
+    }
+
     const patient = await new Patient({
       ...body,
       mobileNumbers: body.mobileNumbers.split(",").map((n) => n.trim()),
@@ -666,6 +690,14 @@ export const deleteSender = async (req, res, next) => {
 export const updatePatient = async (req, res, next) => {
   try {
     const { body } = req.xop;
+    // if a tag has been passed, make sure it exists
+    if (body.tag) {
+      const tagFound = await Tag.findById(body.tag);
+      if (!tagFound) {
+        req.flash("error", ["Selected tag not found"]);
+        return res.redirect(req.header("referer"));
+      }
+    }
 
     await Patient.updateOne(
       {
