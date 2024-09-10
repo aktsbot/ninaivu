@@ -57,7 +57,7 @@
       <input
         type="checkbox"
         id="{{ d.value }}"
-        name="messagesEvery"
+        name="messagesEvery[]"
         value="{{d.value}}"
         {{ 'checked' if d.value in patient.messagesEvery else '' }}
       />

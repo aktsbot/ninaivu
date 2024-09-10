@@ -357,7 +357,7 @@ export const getAdminPatientsHomePage = async (req, res, next) => {
         query,
         "uuid name status mobileNumbers messagesEvery tag patientId notes createdAt updatedAt",
         { skip, limit },
-      ).populate('tag', 'backgroundColor textColor name'),
+      ).populate("tag", "backgroundColor textColor name"),
     ];
 
     const [allCount, totalCount, patients] = await Promise.all(promises);

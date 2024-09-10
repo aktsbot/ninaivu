@@ -46,7 +46,7 @@ app.engine("html", nunjucks.render);
 app.set("view engine", "html");
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true })); // needed for array form fields to work! ex: messagesEvery[]
 app.use(httpLogger());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
