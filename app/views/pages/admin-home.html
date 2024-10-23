@@ -63,59 +63,61 @@
   </div>
 </div>
 
-<table class="table">
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Date</th>
-      <th>Patient</th>
-      <th>Message</th>
-      <th>Sender</th>
-      <th>Status</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    {% for r in reports %}
-    <tr>
-      <td>{{ loop.index + pagination.skip }}</td>
-
-      <td>
-        <span class="fix-datetime" data-fix="date">{{ r.forDate }}</span> <br />
-          <em>
-            <small>Last update: 
-              <span class="fix-datetime">{{ r.updatedAt }}</span>
-            </small>
-          </em>
-      </td>
-
-      <td>
-        {{ r.patient.patientId }} <br />
-        {{ r.patient.name }}
-      </td>
-
-      <td class="ws-pre heavy">{{ r.messageText }}</td>
-
-      <td>{% if r.sender %} {{ r.sender.fullName }} {% endif %}</td>
-
-      <td>
-        <span class="status--{{ r.status }}">
-          {% if r.status == '00-created' %}
-          <i> Added to queue </i>
-          {% elif r.status == '01-sent-to-sender' %}
-          <i>Sender assigned </i>
-          {% elif r.status == '03-sent-to-patient' %}
-          <i> Sent to patient </i>
-          {% elif r.status == '10-try-another-sender' %}
-          <i> Need another sender </i>
-          {% else %}
-          <i> {{ r.status }} </i>
-          {% endif%}
-        </span>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<div style="overflow-x: auto;">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Date</th>
+        <th>Patient</th>
+        <th>Message</th>
+        <th>Sender</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+  
+    <tbody>
+      {% for r in reports %}
+      <tr>
+        <td>{{ loop.index + pagination.skip }}</td>
+  
+        <td>
+          <span class="fix-datetime" data-fix="date">{{ r.forDate }}</span> <br />
+            <em>
+              <small>Last update: 
+                <span class="fix-datetime">{{ r.updatedAt }}</span>
+              </small>
+            </em>
+        </td>
+  
+        <td>
+          {{ r.patient.patientId }} <br />
+          {{ r.patient.name }}
+        </td>
+  
+        <td class="ws-pre heavy">{{ r.messageText }}</td>
+  
+        <td>{% if r.sender %} {{ r.sender.fullName }} {% endif %}</td>
+  
+        <td>
+          <span class="status--{{ r.status }}">
+            {% if r.status == '00-created' %}
+            <i> Added to queue </i>
+            {% elif r.status == '01-sent-to-sender' %}
+            <i>Sender assigned </i>
+            {% elif r.status == '03-sent-to-patient' %}
+            <i> Sent to patient </i>
+            {% elif r.status == '10-try-another-sender' %}
+            <i> Need another sender </i>
+            {% else %}
+            <i> {{ r.status }} </i>
+            {% endif%}
+          </span>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
 
 {% endblock %}

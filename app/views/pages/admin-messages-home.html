@@ -34,37 +34,39 @@
     </div>
   </div>
   
-  <table class="table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Content</th>
-        <th>Notes</th>
-        <th>Action</th>
-      </tr>
-    </thead>
+  <div style="overflow-x: auto;">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Content</th>
+          <th>Notes</th>
+          <th>Action</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      {% for m in messages %}
-      <tr>
-        <td>{{ loop.index + pagination.skip }}</td>
+      <tbody>
+        {% for m in messages %}
+        <tr>
+          <td>{{ loop.index + pagination.skip }}</td>
 
-        <td class="ws-pre">
-          <span class="heavy">{{ m.content }}</span>
-          {% if m.tag %}
-          <span class="pill-tag" style="background-color: {{ m.tag.backgroundColor }}; color: {{ m.tag.textColor }}">{{ m.tag.name }}</span>
-          {% endif %}
-        </td>
-        <td>
-          {{ m.notes }}
-        </td>
-        <td>
-          <a href="{{currentPath}}/{{m.uuid}}/edit">Edit message</a> |
-          <a href="{{currentPath}}/{{m.uuid}}/delete" class="confirm-delete">Delete</a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+          <td class="ws-pre">
+            <span class="heavy">{{ m.content }}</span>
+            {% if m.tag %}
+            <span class="pill-tag" style="background-color: {{ m.tag.backgroundColor }}; color: {{ m.tag.textColor }}">{{ m.tag.name }}</span>
+            {% endif %}
+          </td>
+          <td>
+            {{ m.notes }}
+          </td>
+          <td>
+            <a href="{{currentPath}}/{{m.uuid}}/edit">Edit message</a> |
+            <a href="{{currentPath}}/{{m.uuid}}/delete" class="confirm-delete">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
 {% endblock %}

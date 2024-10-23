@@ -34,66 +34,68 @@
     </div>
   </div>
   
-  <table class="table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Patient Info</th>
-        <th>Mobile numbers</th>
-        <th>Messages every</th>
-        <th>Notes</th>
-        <th>Action</th>
-      </tr>
-    </thead>
+  <div style="overflow-x: auto;">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Patient Info</th>
+          <th>Mobile numbers</th>
+          <th>Messages every</th>
+          <th>Notes</th>
+          <th>Action</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      {% for p in patients %}
-      <tr>
-        <td>{{ loop.index + pagination.skip }}</td>
+      <tbody>
+        {% for p in patients %}
+        <tr>
+          <td>{{ loop.index + pagination.skip }}</td>
 
-        <td>
-          {{ p.patientId }} <br />
-          {{ p.name }} <br />
-          {{ p.status }}
-          {% if p.tag %}
-          <br />
-          <span class="pill-tag" style="background-color: {{ p.tag.backgroundColor }}; color: {{ p.tag.textColor }}">{{ p.tag.name }}</span>
-          {% endif %}
-        </td>
+          <td>
+            {{ p.patientId }} <br />
+            {{ p.name }} <br />
+            {{ p.status }}
+            {% if p.tag %}
+            <br />
+            <span class="pill-tag" style="background-color: {{ p.tag.backgroundColor }}; color: {{ p.tag.textColor }}">{{ p.tag.name }}</span>
+            {% endif %}
+          </td>
 
-        <td>
-          {% for m in p.mobileNumbers %}
-          {{ m }} <br />
-          {% endfor %}
+          <td>
+            {% for m in p.mobileNumbers %}
+            {{ m }} <br />
+            {% endfor %}
 
-          {% if p.mobileNumberOperator %}
-          <div>
-            <strong>
-              <u>
-                <small>{{ p.mobileNumberOperator }}</small>
-              </u>
-            </strong>
-          </div>
-          {% endif %}
-        </td>
+            {% if p.mobileNumberOperator %}
+            <div>
+              <strong>
+                <u>
+                  <small>{{ p.mobileNumberOperator }}</small>
+                </u>
+              </strong>
+            </div>
+            {% endif %}
+          </td>
 
-        <td>
-          {% for d in p.messagesEvery %}
-          {{ d }} <br />
-          {% endfor %}
-        </td>
+          <td>
+            {% for d in p.messagesEvery %}
+            {{ d }} <br />
+            {% endfor %}
+          </td>
 
-        <td class="ws-pre">
-          {{ p.notes }}
-        </td>
+          <td class="ws-pre">
+            {{ p.notes }}
+          </td>
 
-        <td>
-          <a href="{{currentPath}}/{{p.uuid}}/edit">Edit details</a> |
-          <a href="{{currentPath}}/{{p.uuid}}/delete" class="confirm-delete">Delete</a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+          <td>
+            <a href="{{currentPath}}/{{p.uuid}}/edit">Edit details</a> |
+            <a href="{{currentPath}}/{{p.uuid}}/delete" class="confirm-delete">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
 {% endblock %}

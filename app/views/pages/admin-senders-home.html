@@ -35,38 +35,40 @@
     </div>
   </div>
   
-  <table class="table">
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Details</th>
-        <th>Notes</th>
-        <th>Action</th>
-      </tr>
-    </thead>
+  <div style="overflow-x: auto;">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Details</th>
+          <th>Notes</th>
+          <th>Action</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      {% for s in senders %}
-      <tr>
-        <td>{{ loop.index + pagination.skip }}</td>
+      <tbody>
+        {% for s in senders %}
+        <tr>
+          <td>{{ loop.index + pagination.skip }}</td>
 
-        <td>
-          {{ s.name }} | {{ s.user.status }}<br />
-          {{ s.mobileNumber }} <br />
-          {{ s.user.email }} <br />
-        </td>
+          <td>
+            {{ s.name }} | {{ s.user.status }}<br />
+            {{ s.mobileNumber }} <br />
+            {{ s.user.email }} <br />
+          </td>
 
-        <td class="ws-pre">
-          {{ s.notes }}
-        </td>
+          <td class="ws-pre">
+            {{ s.notes }}
+          </td>
 
-        <td>
-          <a href="{{currentPath}}/{{s.uuid}}/edit">Edit</a> |
-          <a href="{{currentPath}}/{{s.uuid}}/delete" class="confirm-delete">Delete</a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+          <td>
+            <a href="{{currentPath}}/{{s.uuid}}/edit">Edit</a> |
+            <a href="{{currentPath}}/{{s.uuid}}/delete" class="confirm-delete">Delete</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
 
 {% endblock %}
