@@ -12,6 +12,7 @@
   <p>Name: {{ patient.name }}</p>
   <p>Patient ID: {{ patient.patientId }}</p>
   <p>Mobile numbers: {{ patient.mobileNumbers | join(', ') }}</p>
+  <p>Mobile number operator: {{ patient.mobileNumberOperator or '-' }}</p>
 
   <p>Messages every: {{ patient.messagesEvery | join(', ') }}</p>
 
@@ -47,6 +48,16 @@
     name="mobileNumbers"
     placeholder="9899098909,8734560987"
   >{{ patient.mobileNumbers | join(',') }}</textarea>
+
+  <label for="mobileNumberOperator">Mobile number operator(optional)</label>
+  <input list="mobileNumberOperatorList" name="mobileNumberOperator" 
+    value="{{ patient.mobileNumberOperator }}"
+    id="mobileNumberOperator" placeholder="airtel" />
+  <datalist id="mobileNumberOperatorList">
+    {% for opt in mobileNumberOperatorList %}
+    <option>{{ opt }}</option>
+    {% endfor %}
+  </datalist>
 
   <fieldset>
     <legend>Message should be sent every</legend>

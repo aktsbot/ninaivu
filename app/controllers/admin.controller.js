@@ -6,6 +6,7 @@ import {
   startOfDay,
   endOfDay,
   makeReportJSON,
+  mobileNumberOperatorList,
 } from "../utils.js";
 
 import { json2csv } from "json-2-csv";
@@ -234,6 +235,7 @@ export const getAdminPatientsNewPage = async (_req, res) => {
       ...meta.meta,
       patientMessageDays,
       allTags,
+      mobileNumberOperatorList,
     });
   } catch (error) {
     next(error);
@@ -427,6 +429,7 @@ export const getAdminPatientsEditPage = async (req, res, next) => {
       patient,
       patientMessageDays,
       allTags,
+      mobileNumberOperatorList,
     });
   } catch (error) {
     next(error);

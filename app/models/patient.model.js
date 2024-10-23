@@ -23,6 +23,10 @@ const PatientSchema = new mongoose.Schema(
         required: true,
       },
     ],
+    mobileNumberOperator: {
+      type: String,
+      default: "",
+    },
     notes: {
       type: String,
     },

@@ -148,7 +148,7 @@ input[type="radio"] {
 }
 
 .heavy {
-  font-size: x-large;
+  font-size: large;
   font-weight: bolder;
 }
 
@@ -162,4 +162,8 @@ input[type="radio"] {
   margin-left: -1px;
   margin-bottom: 10px;
   border-radius: 100px;
+}
+
+datalist {
+  display: none;
 }

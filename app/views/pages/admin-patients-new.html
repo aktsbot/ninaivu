@@ -27,6 +27,14 @@
     placeholder="9899098909,8734560987"
   ></textarea>
 
+  <label for="mobileNumberOperator">Mobile number operator(optional)</label>
+  <input list="mobileNumberOperatorList" name="mobileNumberOperator" id="mobileNumberOperator" placeholder="airtel" />
+  <datalist id="mobileNumberOperatorList">
+    {% for opt in mobileNumberOperatorList %}
+    <option>{{ opt }}</option>
+    {% endfor %}
+  </datalist>
+
   <fieldset>
     <legend>Message should be sent every</legend>
 

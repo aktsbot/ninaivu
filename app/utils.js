@@ -36,6 +36,15 @@ export const patientMessageDays = [
   },
 ];
 
+export const mobileNumberOperatorList = [
+  "airtel",
+  "bsnl",
+  "jio",
+  "vodafone",
+  "idea",
+  "mtnl",
+];
+
 export const startOfDay = (inputDate) => {
   const date = new Date(inputDate);
   date.setUTCHours(0, 0, 0, 0);
