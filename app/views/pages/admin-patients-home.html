@@ -65,6 +65,16 @@
           {% for m in p.mobileNumbers %}
           {{ m }} <br />
           {% endfor %}
+
+          {% if p.mobileNumberOperator %}
+          <div>
+            <strong>
+              <u>
+                <small>{{ p.mobileNumberOperator }}</small>
+              </u>
+            </strong>
+          </div>
+          {% endif %}
         </td>
 
         <td>

@@ -357,7 +357,7 @@ export const getAdminPatientsHomePage = async (req, res, next) => {
       Patient.countDocuments(query),
       Patient.find(
         query,
-        "uuid name status mobileNumbers messagesEvery tag patientId notes createdAt updatedAt",
+        "uuid name status mobileNumbers mobileNumberOperator messagesEvery tag patientId notes createdAt updatedAt",
         { skip, limit },
       ).populate("tag", "backgroundColor textColor name"),
     ];
