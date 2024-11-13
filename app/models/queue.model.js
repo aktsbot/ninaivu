@@ -43,6 +43,10 @@ const QueueSchema = new mongoose.Schema(
       type: Date,
       default: Date.now, // will be same as createdAt, but we will store this for readability
     },
+    resendCount: {
+      type: Number,
+      default: 0,
+    },
   },
   {
     timestamps: true,
