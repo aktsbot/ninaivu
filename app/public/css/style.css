@@ -172,3 +172,11 @@ table {
   border-collapse: collapse;
   width: 100%;
 }
+
+.resent-message-indicator {
+  font-size: small;
+  background: darkred;
+  border-radius: 100px;
+  padding: 2px 4px;
+  color: white;
+}

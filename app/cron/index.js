@@ -47,4 +47,8 @@ export const startCrons = () => {
     logger.info("running cron task every hour: queuer");
     queuer();
   });
+
+  // README: For debugging only! -----
+  // queuer();
+  // ---------------------------------
 };

@@ -15,10 +15,17 @@ const buildSentMessageStats = ({ sentMessages }) => {
       const obj = {
         message: message.message.toString(),
         resendCount: 0,
+        lastSentOn: message.forDate,
       };
       stats.push(obj);
     } else {
       stats[foundIndex]["resendCount"] += 1;
+      // update last datetime of recent send!
+      if (
+        message.forDate.getTime() > stats[foundIndex]["lastSentOn"].getTime()
+      ) {
+        stats[foundIndex]["lastSentOn"] = message.forDate;
+      }
     }
   }
 
@@ -27,8 +34,12 @@ const buildSentMessageStats = ({ sentMessages }) => {
   logger.debug("---- sentMessages ----");
   logger.debug(sentMessages);
 
-  // now sort by asc order of resendCount
-  const sortedStats = stats.sort((a, b) => a["resendCount"] - b["resendCount"]);
+  // now sort by asc order of resendCount and forDate(date when the message is to be sent)
+  const sortedStats = stats.sort(
+    (a, b) =>
+      a["resendCount"] - b["resendCount"] ||
+      a["lastSentOn"].getTime() - b["lastSentOn"].getTime(),
+  );
 
   return sortedStats;
 };
@@ -114,8 +125,8 @@ export const makePatientQueueForDay = async ({ day, startOfDay }) => {
       // then sending that, if we dont find any messages that have not been sent
       const sentMessages = await Queue.find(
         { patient: p._id },
-        "message resendCount",
-        { sort: { resendCount: -1 } },
+        "message resendCount forDate",
+        { sort: { resendCount: -1, forDate: -1 } },
       ).lean();
       let messageIdsToRemove = [];
       if (sentMessages.length) {

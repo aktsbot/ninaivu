@@ -95,7 +95,15 @@
           {{ r.patient.name }}
         </td>
   
-        <td class="ws-pre heavy">{{ r.messageText }}</td>
+        <td>
+          <div class="ws-pre heavy">{{ r.messageText }}</div>
+          
+          {% if r.resendCount > 0 %}
+          <span class="resent-message-indicator" title="Resent this message {{ r.resendCount }} times.">
+            <span>&#x21bb; {{ r.resendCount }}</span>
+          </span>
+          {% endif %}
+        </td>
   
         <td>{% if r.sender %} {{ r.sender.fullName }} {% endif %}</td>
   
