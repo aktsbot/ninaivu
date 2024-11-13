@@ -8,20 +8,27 @@ const buildSentMessageStats = ({ sentMessages }) => {
   const stats = [];
 
   for (const message of sentMessages) {
-    const foundIndex = stats.findIndex((s) => s.message === message._id.toString());
+    const foundIndex = stats.findIndex(
+      (s) => s.message === message.message.toString(), // .message is an ObjectId
+    );
     if (foundIndex === -1) {
       const obj = {
-        message: message._id.toString(),
-        resendCount: 1
-      }
-      stats.push(obj)
+        message: message.message.toString(),
+        resendCount: 0,
+      };
+      stats.push(obj);
     } else {
-      stats[foundIndex]['resendCount'] += 1;
+      stats[foundIndex]["resendCount"] += 1;
     }
   }
 
+  logger.debug("---- stats ----");
+  logger.debug(stats);
+  logger.debug("---- sentMessages ----");
+  logger.debug(sentMessages);
+
   // now sort by asc order of resendCount
-  const sortedStats = stats.sort((a, b) => a['resendCount'] - b['resendCount']);
+  const sortedStats = stats.sort((a, b) => a["resendCount"] - b["resendCount"]);
 
   return sortedStats;
 };
@@ -133,6 +140,9 @@ export const makePatientQueueForDay = async ({ day, startOfDay }) => {
         };
         patientList.push(payload);
       } else {
+        logger.info(
+          `Patient has no new unsent messages. Getting the least sent message for the patient ...`,
+        );
         const messageStats = buildSentMessageStats({ sentMessages });
         // we get sorted array of messages that look like
         // { message: '_id', resendCount: 2 }
@@ -140,7 +150,7 @@ export const makePatientQueueForDay = async ({ day, startOfDay }) => {
         if (messageStats[0]) {
           const messageData = await Message.findOne({
             status: "active",
-            _id: messageStats[0]["_id"],
+            _id: messageStats[0]["message"],
           });
           if (messageData) {
             const payload = {
