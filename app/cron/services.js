@@ -4,6 +4,28 @@ import Queue from "../models/queue.model.js";
 
 import logger from "../logger.js";
 
+const buildSentMessageStats = ({ sentMessages }) => {
+  const stats = [];
+
+  for (const message of sentMessages) {
+    const foundIndex = stats.findIndex((s) => s.message === message._id.toString());
+    if (foundIndex === -1) {
+      const obj = {
+        message: message._id.toString(),
+        resendCount: 1
+      }
+      stats.push(obj)
+    } else {
+      stats[foundIndex]['resendCount'] += 1;
+    }
+  }
+
+  // now sort by asc order of resendCount
+  const sortedStats = stats.sort((a, b) => a['resendCount'] - b['resendCount']);
+
+  return sortedStats;
+};
+
 export const makePatientQueueForDay = async ({ day, startOfDay }) => {
   logger.info(`making list for ${day} : ${startOfDay}`);
   const patientList = [];
@@ -80,9 +102,13 @@ export const makePatientQueueForDay = async ({ day, startOfDay }) => {
 
     for (const p of patients) {
       // get messages that have not been sent for this patient
+      //
+      // we plan on getting the message that has been sent least number of times and
+      // then sending that, if we dont find any messages that have not been sent
       const sentMessages = await Queue.find(
         { patient: p._id },
-        "message",
+        "message resendCount",
+        { sort: { resendCount: -1 } },
       ).lean();
       let messageIdsToRemove = [];
       if (sentMessages.length) {
@@ -103,8 +129,31 @@ export const makePatientQueueForDay = async ({ day, startOfDay }) => {
           patient: p._id,
           message: oneMessage._id,
           forDate: startOfDay,
+          resendCount: 0,
         };
         patientList.push(payload);
+      } else {
+        const messageStats = buildSentMessageStats({ sentMessages });
+        // we get sorted array of messages that look like
+        // { message: '_id', resendCount: 2 }
+        // the first element is the message that has been sent the least number of times.
+        if (messageStats[0]) {
+          const messageData = await Message.findOne({
+            status: "active",
+            _id: messageStats[0]["_id"],
+          });
+          if (messageData) {
+            const payload = {
+              messageText: messageData.content,
+              mobileNumbers: p.mobileNumbers.join(","),
+              patient: p._id,
+              message: messageData._id,
+              forDate: startOfDay,
+              resendCount: messageStats[0]["resendCount"] + 1,
+            };
+            patientList.push(payload);
+          }
+        }
       }
     }
 
