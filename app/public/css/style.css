@@ -180,3 +180,12 @@ table {
   padding: 2px 4px;
   color: white;
 }
+
+.msg-sender-box {
+  height: 250px;
+  overflow: auto;
+  font-family: mono;
+  border: 1px solid #dcdcdc;
+  padding: 5px;
+  border-radius: 5px;
+}
