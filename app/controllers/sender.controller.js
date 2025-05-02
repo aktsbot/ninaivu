@@ -36,6 +36,7 @@ export const getSendersHomePage = async (req, res, next) => {
     let patient = {
       patientId: null,
       mobileNumbers: "",
+      patientName: "",
     };
     let messageText = "";
     let queueItemId = "";
@@ -47,6 +48,7 @@ export const getSendersHomePage = async (req, res, next) => {
       await queueItem.save();
 
       patient.patientId = queueItem.patient.patientId;
+      patient.patientName = queueItem.patient.name;
       patient.mobileNumbers = queueItem.mobileNumbers;
       messageText = queueItem.messageText;
       queueItemId = queueItem.uuid;
