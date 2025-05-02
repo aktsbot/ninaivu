@@ -525,7 +525,14 @@ export const createPatient = async (req, res, next) => {
       `Patient ${patient.name} has been created successfully.`,
     ]);
 
-    res.redirect("/admin/patients");
+    const limit = 20;
+    const totalPatientCount = await Patient.countDocuments({
+      status: ["active", "inactive"],
+    });
+    const totalPages = Math.ceil(totalPatientCount / limit);
+
+    // go back to the last page of patient list
+    res.redirect(`/admin/patients?page=${totalPages}`);
     return;
   } catch (error) {
     next(error);
