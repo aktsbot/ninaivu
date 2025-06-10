@@ -25,7 +25,7 @@
               id="{{ d.value }}"
               name="messagesEvery[]"
               value="{{d.value}}"
-              {{ 'checked' if d.value in query.messagesEvery else '' }}
+              {{ 'checked' if query.messagesEvery and d.value in query.messagesEvery else '' }}
             />
             <label for="{{ d.value }}">{{ d.text }}</label>
           </div>
