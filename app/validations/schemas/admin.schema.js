@@ -23,6 +23,7 @@ export const searchSchema = joi
       page: joi.number().optional().min(1),
       fromDate: joi.string().allow("").optional(),
       toDate: joi.string().allow("").optional(),
+      messagesEvery: joi.array().items(joi.string().required()).optional(),
     }),
   })
   .unknown(true);
