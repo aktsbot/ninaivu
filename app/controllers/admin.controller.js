@@ -353,12 +353,18 @@ export const getAdminPatientsHomePage = async (req, res, next) => {
     }
 
     if (req.xop.query.messagesEvery) {
-      paginationUrls.prev += `&messagesEvery=${req.xop.query.messagesEvery}`;
-      paginationUrls.next += `&messagesEvery=${req.xop.query.messagesEvery}`;
-
       query["messagesEvery"] = {
         $in: req.xop.query.messagesEvery,
       };
+
+      // to make the url look like
+      // ?messagesEvery[]=monday&messagesEvery[]=thursday
+      // this helps express get
+      // {messagesEvery: [monday, thursday]}
+      for (const mev of req.xop.query.messagesEvery) {
+        paginationUrls.prev += `&messagesEvery[]=${mev}`;
+        paginationUrls.next += `&messagesEvery[]=${mev}`;
+      }
     }
 
     logger.debug("query");
