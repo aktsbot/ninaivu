@@ -16,7 +16,7 @@
         value="{{ query.search }}"
         placeholder="search by name, patient id or mobile number" aria-label="search by name, patient id or mobile number" />
       
-        <details>
+        <details  {{ 'open' if query.messagesEvery else '' }}>
           <summary>Filter by day?</summary>
           {% for d in patientMessageDays %}
           <div>
