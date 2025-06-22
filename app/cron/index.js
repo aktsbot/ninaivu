@@ -31,7 +31,7 @@ async function queuer() {
     startOfDay.setUTCHours(0, 0, 0, 0);
 
     // --- for testing only!
-    // const date = "2024-05-03T03:20:01.041Z";
+    // const date = "2025-05-03T03:20:01.041Z";
     // const day = "friday";
     // const startOfDay = new Date(date);
     // startOfDay.setUTCHours(0, 0, 0, 0);
