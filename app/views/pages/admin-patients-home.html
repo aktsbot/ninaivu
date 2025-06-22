@@ -15,6 +15,23 @@
       <input type="text" id="search" name="search" 
         value="{{ query.search }}"
         placeholder="search by name, patient id or mobile number" aria-label="search by name, patient id or mobile number" />
+      
+        <details  {{ 'open' if query.messagesEvery else '' }}>
+          <summary>Filter by day?</summary>
+          {% for d in patientMessageDays %}
+          <div>
+            <input
+              type="checkbox"
+              id="{{ d.value }}"
+              name="messagesEvery[]"
+              value="{{d.value}}"
+              {{ 'checked' if query.messagesEvery and d.value in query.messagesEvery else '' }}
+            />
+            <label for="{{ d.value }}">{{ d.text }}</label>
+          </div>
+          {% endfor %}
+          <input type="submit" value="filter" class="tiny-input-btn" />
+        </details>
     </form>
   </div>
 

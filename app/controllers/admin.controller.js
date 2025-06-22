@@ -44,7 +44,7 @@ export const getAdminHomePage = async (req, res, next) => {
         {
           patientId: { $regex: req.xop.query.search, $options: "i" },
         },
-        "_id uuid",
+        "_id uuid"
       );
 
       query["$or"] = [
@@ -159,7 +159,7 @@ export const getAdminSendersHomePage = async (req, res, next) => {
       Sender.find(
         query,
         "uuid name mobileNumber user notes createdAt updatedAt",
-        { skip, limit },
+        { skip, limit }
       ).populate("user", "email uuid status createdAt updatedAt"),
     ];
 
@@ -214,7 +214,7 @@ export const getAdminSenderEditPage = async (req, res, next) => {
     const meta = routeMeta["adminSendersEdit"];
     const sender = await Sender.findOne(
       { uuid: req.params.uuid },
-      "uuid name mobileNumber notes user createdAt",
+      "uuid name mobileNumber notes user createdAt"
     ).populate("user", "fullName email uuid");
 
     return res.render(meta.template, {
@@ -352,13 +352,31 @@ export const getAdminPatientsHomePage = async (req, res, next) => {
       ];
     }
 
+    if (req.xop.query.messagesEvery) {
+      query["messagesEvery"] = {
+        $in: req.xop.query.messagesEvery,
+      };
+
+      // to make the url look like
+      // ?messagesEvery[]=monday&messagesEvery[]=thursday
+      // this helps express get
+      // {messagesEvery: [monday, thursday]}
+      for (const mev of req.xop.query.messagesEvery) {
+        paginationUrls.prev += `&messagesEvery[]=${mev}`;
+        paginationUrls.next += `&messagesEvery[]=${mev}`;
+      }
+    }
+
+    logger.debug("query");
+    logger.debug(query);
+
     const promises = [
       Patient.countDocuments({ status: ["active", "inactive"] }),
       Patient.countDocuments(query),
       Patient.find(
         query,
         "uuid name status mobileNumbers mobileNumberOperator messagesEvery tag patientId notes createdAt updatedAt",
-        { skip, limit },
+        { skip, limit }
       ).populate("tag", "backgroundColor textColor name"),
     ];
 
@@ -379,6 +397,7 @@ export const getAdminPatientsHomePage = async (req, res, next) => {
 
     return res.render(meta.template, {
       ...meta.meta,
+      patientMessageDays,
       patients,
       allCount,
       totalCount,
@@ -403,7 +422,7 @@ export const getAdminMessagesEditPage = async (req, res, next) => {
     const allTags = await Tag.find({}, {}, { sort: { _id: -1 } });
     const message = await Message.findOne(
       { uuid: req.params.uuid },
-      "uuid content notes tag status createdAt",
+      "uuid content notes tag status createdAt"
     ).populate("tag", "name backgroundColor textColor");
 
     return res.render(meta.template, {
@@ -422,7 +441,7 @@ export const getAdminPatientsEditPage = async (req, res, next) => {
     const allTags = await Tag.find({}, {}, { sort: { _id: -1 } });
     const patient = await Patient.findOne({ uuid: req.params.uuid }).populate(
       "tag",
-      "name backgroundColor textColor",
+      "name backgroundColor textColor"
     );
     return res.render(meta.template, {
       ...meta.meta,
@@ -460,7 +479,7 @@ export const createSender = async (req, res, next) => {
     const { body } = req.xop;
     const userPresent = await User.findOne(
       { email: body.senderEmail },
-      { _id: 1, password: 1, email: 1, fullName: 1 },
+      { _id: 1, password: 1, email: 1, fullName: 1 }
     );
 
     if (userPresent) {
@@ -596,7 +615,7 @@ export const updateMessage = async (req, res, next) => {
         $set: {
           ...body,
         },
-      },
+      }
     );
 
     req.flash("success", [`Message has been updated successfully.`]);
@@ -618,7 +637,7 @@ export const deleteMessage = async (req, res, next) => {
         $set: {
           status: "zz-deleted",
         },
-      },
+      }
     );
 
     req.flash("success", [`Message has been deleted successfully.`]);
@@ -717,7 +736,7 @@ export const updatePatient = async (req, res, next) => {
         $set: {
           ...body,
         },
-      },
+      }
     );
 
     req.flash("success", [`Patient has been updated successfully.`]);
