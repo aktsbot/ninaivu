@@ -19,7 +19,7 @@ export const searchSchema = joi
   .object()
   .keys({
     query: joi.object().keys({
-      search: joi.string().allow("").optional(),
+      search: joi.string().trim().allow("").optional(),
       page: joi.number().optional().min(1),
       fromDate: joi.string().allow("").optional(),
       toDate: joi.string().allow("").optional(),
