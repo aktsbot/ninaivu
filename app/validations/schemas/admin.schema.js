@@ -24,6 +24,7 @@ export const searchSchema = joi
       fromDate: joi.string().allow("").optional(),
       toDate: joi.string().allow("").optional(),
       messagesEvery: joi.array().items(joi.string().required()).optional(),
+      showOnlyDeleted: joi.number().valid(0, 1).optional(),
     }),
   })
   .unknown(true);

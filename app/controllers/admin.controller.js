@@ -339,6 +339,10 @@ export const getAdminPatientsHomePage = async (req, res, next) => {
       next: `${req.baseUrl + req.path}?`,
     };
 
+    if (req.xop.query.showOnlyDeleted && req.xop.query.showOnlyDeleted == 1) {
+      query["status"] = ["zz-deleted"];
+    }
+
     if (req.xop.query.search) {
       paginationUrls.prev += `&search=${req.xop.query.search}`;
       paginationUrls.next += `&search=${req.xop.query.search}`;

@@ -33,6 +33,11 @@
           <input type="submit" value="filter" class="tiny-input-btn" />
         </details>
     </form>
+    {% if query.showOnlyDeleted %}
+    <a href="/admin/patients">Show current patients?</a>
+    {% else %}
+    <a href="?showOnlyDeleted=1">Show only deleted patients?</a>
+    {% endif %}
   </div>
 
   <div class="text-center">
@@ -106,8 +111,15 @@
           </td>
 
           <td>
+            {% if p.status == 'zz-deleted' %}
+            <p class="failed-message-indicator">Deleted</p>
+            <small>
+              <span class="fix-datetime">{{ p.updatedAt }}</span>
+            </small>
+            {% else %}
             <a href="{{currentPath}}/{{p.uuid}}/edit">Edit</a> |
             <a href="{{currentPath}}/{{p.uuid}}/delete" class="confirm-delete">Delete</a>
+            {% endif %}
           </td>
         </tr>
         {% endfor %}
