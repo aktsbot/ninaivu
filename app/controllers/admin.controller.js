@@ -5,11 +5,16 @@ import {
   patientMessageDays,
   startOfDay,
   endOfDay,
-  makeReportJSON,
+  makeReportRow,
   mobileNumberOperatorList,
 } from "../utils.js";
 
-import { json2csv } from "json-2-csv";
+// new csv handling ------------------
+import { stringify as csvStringify } from "csv-stringify";
+import util from "util";
+import stream from "stream";
+const pipeline = util.promisify(stream.pipeline);
+// -----------------------------------
 
 import User from "../models/user.model.js";
 import Sender from "../models/sender.model.js";
@@ -813,24 +818,27 @@ export const getAdminCSVReport = async (req, res, next) => {
       }
     }
 
-    const promises = [
-      Queue.find(query, {}, { sort: { forDate: -1 } })
-        .populate("patient")
-        .populate("message")
-        .populate("sender"),
-    ];
+    const reportsCursor = Queue.find(query, {}, { sort: { forDate: -1 } })
+      .populate("patient")
+      .populate("message")
+      .populate("sender")
+      .cursor({ transform: makeReportRow });
 
-    const [reports] = await Promise.all(promises);
-
-    const json = makeReportJSON(reports);
-    const csv = json2csv(json);
+    logger.debug("reportsCursor");
+    logger.debug(reportsCursor);
 
     let fileName = `ninaivureport_${new Date().getTime()}`;
     fileName += `_${req.xop.query.fromDate.replace(/-/g, "")}`;
     fileName += `_${req.xop.query.toDate.replace(/-/g, "")}`;
     fileName += ".csv";
 
-    return res.attachment(fileName).send(csv);
+    let csvStream = csvStringify({
+      header: true,
+    });
+
+    res.attachment(fileName);
+    // https://icircuit.net/nodejs-exporting-large-mongodb-collections/2787
+    await pipeline(reportsCursor, csvStream, res);
   } catch (error) {
     next(error);
   }

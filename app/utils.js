@@ -1,3 +1,5 @@
+import logger from "./logger.js";
+
 export const patientMessageDays = [
   {
     text: "Monday",
@@ -79,6 +81,19 @@ export const formattedDate = ({ date, addTime }) => {
   return dateString;
 };
 
+export const makeReportRow = (d) => {
+  return {
+    for_date: formattedDate({ date: d.forDate }),
+    last_updated_at: formattedDate({ date: d.updatedAt, addTime: true }),
+    patient_id: d.patient.patientId,
+    patient_name: d.patient.name,
+    patient_mobile_numbers: d.mobileNumbers.replace(/,/g, "\n"),
+    message: d.messageText,
+    sender: d.sender ? d.sender.fullName : "",
+    status: d.status,
+  };
+};
+
 export const makeReportJSON = (data) => {
   const rows = [];
   /*
@@ -95,16 +110,7 @@ export const makeReportJSON = (data) => {
    *
    */
   for (const d of data) {
-    const r = {
-      for_date: formattedDate({ date: d.forDate }),
-      last_updated_at: formattedDate({ date: d.updatedAt, addTime: true }),
-      patient_id: d.patient.patientId,
-      patient_name: d.patient.name,
-      patient_mobile_numbers: d.mobileNumbers.replace(/,/g, "\n"),
-      message: d.messageText,
-      sender: d.sender ? d.sender.fullName : "",
-      status: d.status,
-    };
+    const r = makeReportRow(d);
     rows.push(r);
   }
 
