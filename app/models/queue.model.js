@@ -23,7 +23,7 @@ const QueueSchema = new mongoose.Schema(
     },
     message: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Sender",
+      ref: "Message",
     },
     sender: {
       type: mongoose.Schema.Types.ObjectId,
@@ -51,7 +51,7 @@ const QueueSchema = new mongoose.Schema(
   {
     timestamps: true,
     versionKey: false,
-  },
+  }
 );
 
 QueueSchema.methods.addLog = async function (text) {

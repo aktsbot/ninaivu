@@ -89,6 +89,7 @@ export const makeReportRow = (d) => {
     patient_name: d.patient.name,
     patient_mobile_numbers: d.mobileNumbers.replace(/,/g, "\n"),
     message: d.messageText,
+    message_notes: d.message ? d.message.notes : "",
     sender: d.sender ? d.sender.fullName : "",
     status: d.status,
   };
