@@ -63,6 +63,14 @@
 <!-- scripts -->
 {% block extrascript %}
 <script>
+  function rememberSendBtnClicked() {
+    if ('URLSearchParams' in window) {
+      const url = new URL(window.location)
+      url.searchParams.set("send-btn-clicked", "1")
+      history.pushState(null, '', url);
+    }
+  }
+
   function main() {
     let btn = document.querySelector('#send-sms-btn');
     let form = document.querySelector('#get-new-message-form');
@@ -73,7 +81,21 @@
     btn.addEventListener('click', () => {
       form.classList.remove('d-none')
       btn.classList.add('d-none')
+      rememberSendBtnClicked()
     })
+
+    // check if the page got reloaded while the user was sending sms in
+    // Messages app on phone.
+    // this was a common problem, for which the user had to click send again.
+    // delete the message text from Messages app and then go back to browser.
+    if ('URLSearchParams' in window) {
+      const url = new URL(window.location)
+      const sendBtnClicked = url.searchParams.get("send-btn-clicked")
+      if (sendBtnClicked == '1') {
+        form.classList.remove('d-none')
+        btn.classList.add('d-none')
+      }
+    }
   }
 
   main();
