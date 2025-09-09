@@ -92,6 +92,7 @@ export const makeReportRow = (d) => {
     message_notes: d.message ? d.message.notes : "",
     sender: d.sender ? d.sender.fullName : "",
     status: d.status,
+    times_resend: d.resendCount,
   };
 };
 
