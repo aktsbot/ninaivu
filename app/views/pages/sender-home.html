@@ -67,6 +67,7 @@
     if ('URLSearchParams' in window) {
       const url = new URL(window.location)
       url.searchParams.set("send-btn-clicked", "1")
+      url.searchParams.set("ts", new Date().getTime()) // some tom foolery caching is happening otherwise
       history.pushState(null, '', url);
     }
   }
